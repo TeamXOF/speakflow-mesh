@@ -1,6 +1,6 @@
-# SpeakFlow Mesh 🎙️✨
+# SpeakFlow 🎙️✨
 
-**SpeakFlow Mesh** is an intelligent, story-based speech and reading companion designed to empower young learners through engaging checkpoint adventures, real-time speech evaluation, and AI-powered feedback, paired with actionable diagnostics for teachers and educators.
+**SpeakFlow** is an intelligent, story-based speech and reading companion designed to empower young learners through engaging checkpoint adventures, real-time speech evaluation, and AI-powered feedback, paired with actionable diagnostics for teachers and educators.
 
 ---
 
