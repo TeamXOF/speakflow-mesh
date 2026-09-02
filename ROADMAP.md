@@ -231,12 +231,13 @@ Codes: `VALIDATION_ERROR` · `SESSION_NOT_FOUND` · `AUDIO_TOO_SHORT` · `GROQ_U
 
 > 🔴 **There is no existing codebase.** The repo currently has only `README.md`, `Context/`, and `assets/`. Everything is created from scratch in this phase.
 
-- [ ] **0.5.1** Initialize a Next.js project with TypeScript and Tailwind CSS in the project root:
+- [ ] **0.5.1** Initialize a Next.js project with TypeScript and Tailwind CSS in a new `frontend` folder:
   ```bash
-  npx create-next-app@latest ./ --typescript --tailwind --eslint --app --src-dir=false --import-alias="@/*"
+  npx create-next-app@latest ./frontend --typescript --tailwind --eslint --app --src-dir=false --import-alias="@/*"
   ```
-- [ ] **0.5.2** Install additional dependencies:
+- [ ] **0.5.2** Navigate into the frontend folder and install additional dependencies:
   ```bash
+  cd frontend
   npm install recharts lucide-react date-fns
   ```
 - [ ] **0.5.3** Set up `app/globals.css` with all design tokens as CSS custom properties:
@@ -268,7 +269,7 @@ Codes: `VALIDATION_ERROR` · `SESSION_NOT_FOUND` · `AUDIO_TOO_SHORT` · `GROQ_U
 ### 🧪 How to Verify (Phase 0.5)
 > **Do these steps yourself — do not skip any.**
 
-1. Run `npm run dev` in terminal. Open `http://localhost:3000` in your browser.
+1. Navigate into the frontend folder (`cd frontend`) and run `npm run dev` in terminal. Open `http://localhost:3000` in your browser.
 2. ✅ The app loads without errors in the browser console (press F12 to check).
 3. ✅ You see the sidebar on the left with all navigation links.
 4. ✅ You see the topbar at the top with a greeting and date.
@@ -855,9 +856,10 @@ const DEMO_STUDENTS = [
 > **Model:** Flash 3.8  
 > **Reference:** `Context/speakflow_roadmap_architecture.md`, Part 4, Prompt 1
 
-- [ ] **A.1** Create folder structure:
+- [ ] **A.1** Create a `backend` folder and set up this structure inside it:
   ```
-  /app
+  /backend
+    /app
     /api          (route handlers)
     /core         (config.py, network.py)
     /services
@@ -875,8 +877,8 @@ const DEMO_STUDENTS = [
 - [ ] **A.4** `requirements.txt`: `fastapi`, `uvicorn`, `python-dotenv`, `librosa`, `groq`, `google-generativeai`, `faster-whisper`, `aiosqlite`
 
 ### 🧪 How to Verify (Phase A)
-1. Run `pip install -r requirements.txt` — no errors.
-2. Run `uvicorn main:app --reload` — server boots without errors.
+1. Navigate into the backend folder (`cd backend`) and run `pip install -r requirements.txt` — no errors.
+2. Run `uvicorn app.main:app --reload` (or `uvicorn main:app` depending on where you put main.py) — server boots without errors.
 3. Run `curl http://localhost:8000/api/v1/health` (or open in browser).
 4. ✅ You get a 200 response with JSON: `{ "mode": "online", "groq_reachable": null, "gemini_reachable": null, "server_time": "2026-..." }`.
 5. ✅ The folder structure matches the layout above.
