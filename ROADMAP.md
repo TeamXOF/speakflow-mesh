@@ -942,10 +942,10 @@ const DEMO_STUDENTS = [
 > **Reference:** Prompt 5  
 > ⚠️ Verify the exact model ID is on the free tier before committing.
 
-- [ ] **E.1** `generate_feedback(mismatch_data: dict) -> str` — text-only Gemini call; 1.5s soft timeout
-- [ ] **E.2** `judge_hesitation(audio_bytes, pause_context: dict) -> "nervous" | "not_knowing"` — multimodal; only fires when `pause_ms > HESITATION_THRESHOLD` (400ms)
-- [ ] **E.3** Both raise specific exception types (not bare `Exception`)
-- [ ] **E.4** Use `GEMINI_API_KEY` for dev; `GEMINI_API_KEY_DEMO` for demo day
+- [x] **E.1** `generate_feedback(mismatch_data: dict) -> str` — text-only Gemini call; 1.5s soft timeout
+- [x] **E.2** `judge_hesitation(audio_bytes, pause_context: dict) -> "nervous" | "not_knowing"` — multimodal; only fires when `pause_ms > HESITATION_THRESHOLD` (400ms)
+- [x] **E.3** Both raise specific exception types (not bare `Exception`)
+- [x] **E.4** Use `GEMINI_API_KEY` for dev; `GEMINI_API_KEY_DEMO` for demo day
 
 ### 🧪 How to Verify (Phase E)
 1. Run `python scripts/test_gemini_feedback.py` with 5 sample mismatch inputs.

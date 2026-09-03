@@ -1,9 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    GROQ_API_KEY: str
-    GEMINI_API_KEY: str
-    GEMINI_API_KEY_DEMO: str
+    GROQ_API_KEY: str = ""
+    GEMINI_API_KEY: str = ""
+    GEMINI_API_KEY_DEMO: str = ""
     ENV: str = "dev"
     CORRECT_THRESHOLD: int = 70
 

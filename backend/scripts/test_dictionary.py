@@ -22,8 +22,18 @@ def test_dictionary():
     print(f"[OK] en_fox found. Pitch mean: {en_fox.pitch_mean}")
     assert en_fox.pitch_mean == 220.0, "Mismatch in English auto-generated vector"
     
+    # 3. English word 3
+    en_cat = d.lookup("cat", "en")
+    print(f"[OK] en_cat found. Pitch mean: {en_cat.pitch_mean}")
+    assert en_cat.pitch_mean == 300.0, "Mismatch in English auto-generated vector"
+
+    # 4. Urdu word (no override)
+    ur_sheen = d.lookup("sheen", "ur")
+    print(f"[OK] ur_sheen found. Pitch mean: {ur_sheen.pitch_mean}")
+    assert ur_sheen.pitch_mean == 280.0, "Mismatch in Urdu auto-generated vector"
+
     print("\n--- Testing Manual Overrides ---")
-    # 3. Urdu word with override
+    # 5. Urdu word with override
     ur_qaf = d.lookup("qaf", "ur")
     print(f"[OK] ur_qaf found. Pitch mean: {ur_qaf.pitch_mean}")
     # The auto-generated one has 300, the override has 320. 

@@ -37,6 +37,18 @@ def build_dictionary():
             "energy_mean": 0.7,
             "energy_std": 0.15
         },
+        "en_cat": {
+            "pitch_mean": 300.0,
+            "pitch_std": 20.0,
+            "f1_mean": 800.0,
+            "f1_std": 40.0,
+            "f2_mean": 1500.0,
+            "f2_std": 50.0,
+            "zcr_mean": 0.06,
+            "zcr_std": 0.02,
+            "energy_mean": 0.8,
+            "energy_std": 0.1
+        },
         "ur_qaf": {
             "pitch_mean": 300.0,
             "pitch_std": 12.0,
@@ -47,6 +59,18 @@ def build_dictionary():
             "zcr_mean": 0.04,
             "zcr_std": 0.01,
             "energy_mean": 0.85,
+            "energy_std": 0.1
+        },
+        "ur_sheen": {
+            "pitch_mean": 280.0,
+            "pitch_std": 10.0,
+            "f1_mean": 650.0,
+            "f1_std": 25.0,
+            "f2_mean": 1250.0,
+            "f2_std": 45.0,
+            "zcr_mean": 0.03,
+            "zcr_std": 0.01,
+            "energy_mean": 0.75,
             "energy_std": 0.1
         }
     }
