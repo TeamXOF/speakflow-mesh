@@ -12,7 +12,7 @@ class GeminiFeedbackClient:
         
         genai.configure(api_key=api_key)
         
-        # User requested to explicitly use this string, even if it fails in current SDKs
+        # User requested to explicitly use this string
         model_name = "models/gemini-3.5-flash-lite"
         try:
             self.model = genai.GenerativeModel(model_name)

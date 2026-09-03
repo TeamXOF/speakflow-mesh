@@ -959,8 +959,8 @@ const DEMO_STUDENTS = [
 > **Model:** Flash 3.8  
 > **Reference:** Prompt 6
 
-- [ ] **F.1** `local_whisper(audio_bytes) -> TranscriptResult` — same shape as Groq; INT8 model via `faster-whisper`; **loaded once at startup**
-- [ ] **F.2** `network_available() -> bool` — cheap reachability probe (NOT Groq/Gemini); cached 5s TTL
+- [x] **F.1** `local_whisper(audio_bytes) -> TranscriptResult` — same shape as Groq; INT8 model via `faster-whisper`; **loaded once at startup**
+- [x] **F.2** `network_available() -> bool` — cheap reachability probe (NOT Groq/Gemini); cached 5s TTL
 
 ### 🧪 How to Verify (Phase F)
 1. Run `python scripts/test_local_whisper.py` with the same 3 WAV files from Phase B.

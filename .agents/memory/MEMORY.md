@@ -15,3 +15,4 @@
 - [session] Backend Phase C (Librosa Acoustic Engine) complete. Implemented feature extraction and scoring. Verified by user with 54-point gap.
 - [session] Backend Phase D (Phoneme Reference Dictionary) complete. Implemented ReferenceDictionary with manual overrides and tests.
 - [session] Backend Phase E (Gemini 3.5 Flash-Lite Integration) complete. Implemented feedback and hesitation generation with SDK exceptions and timeouts.
+- [session] Backend Phase F (Local Whisper Fallback) complete. Integrated faster-whisper (tiny.en) for offline STT fallback and DNS-based network reachability detection with TTL.

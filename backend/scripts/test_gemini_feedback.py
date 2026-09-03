@@ -30,16 +30,21 @@ def test_gemini_feedback():
         return
 
     print("\n--- Testing E.1 generate_feedback (Text-only) ---")
-    mismatch_data = {
-        "word": "rabbit",
-        "issue": "Child pronounced the 'r' like a 'w'. Pitch was normal, but formants suggest rounded lips."
-    }
-    try:
-        feedback = client.generate_feedback(mismatch_data)
-        print(f"[OK] Feedback Generated:\n\"{feedback}\"")
-        assert len(feedback) > 5, "Feedback string was empty or too short."
-    except Exception as e:
-        print(f"[FAIL] generate_feedback failed: {e}")
+    mismatch_data_list = [
+        {"word": "rabbit", "issue": "Child pronounced the 'r' like a 'w'. Pitch was normal, but formants suggest rounded lips."},
+        {"word": "elephant", "issue": "Child skipped the middle syllable, saying 'el-fant'."},
+        {"word": "umbrella", "issue": "Child said 'um-bwe-la', struggling with the 'r' and 'l' sounds."},
+        {"word": "qaf", "language": "ur", "issue": "Child pronounced it like 'kaf' (k instead of deep q). Needs to come from deeper in the throat."},
+        {"word": "sheen", "language": "ur", "issue": "Child pronounced it like 'seen' (s instead of sh)."}
+    ]
+    
+    for i, data in enumerate(mismatch_data_list):
+        try:
+            feedback = client.generate_feedback(data)
+            print(f"Sample {i+1} [OK] Feedback Generated:\n\"{feedback}\"\n")
+            assert len(feedback) > 5, "Feedback string was empty or too short."
+        except Exception as e:
+            print(f"Sample {i+1} [FAIL] generate_feedback failed: {e}")
 
     print("\n--- Testing E.2 judge_hesitation (Multimodal) ---")
     wav_path = "temp_hesitation.wav"
@@ -48,21 +53,22 @@ def test_gemini_feedback():
     with open(wav_path, "rb") as f:
         audio_bytes = f.read()
 
-    pause_context = {
-        "pause_duration_ms": 1200,
-        "word_before": "the",
-        "word_expected": "elephant"
-    }
+    pause_contexts = [
+        {"pause_duration_ms": 1200, "word_before": "the", "word_expected": "elephant"},
+        {"pause_duration_ms": 600, "word_before": "I", "word_expected": "am", "note": "Child has a stuttering history."},
+        {"pause_duration_ms": 2000, "word_before": "big", "word_expected": "hippopotamus"}
+    ]
 
-    try:
-        judgement = client.judge_hesitation(audio_bytes, pause_context)
-        print(f"[OK] Judgement: '{judgement}'")
-        assert judgement in ["nervous", "not_knowing"], f"Invalid judgement: {judgement}"
-    except Exception as e:
-        print(f"[FAIL] judge_hesitation failed: {e}")
-    finally:
-        if os.path.exists(wav_path):
-            os.remove(wav_path)
+    for i, ctx in enumerate(pause_contexts):
+        try:
+            judgement = client.judge_hesitation(audio_bytes, ctx)
+            print(f"Pause {i+1} [OK] Judgement: '{judgement}'")
+            assert judgement in ["nervous", "not_knowing"], f"Invalid judgement: {judgement}"
+        except Exception as e:
+            print(f"Pause {i+1} [FAIL] judge_hesitation failed: {e}")
+            
+    if os.path.exists(wav_path):
+        os.remove(wav_path)
 
     print("\n--- Testing E.4 Missing Key Exception Handling ---")
     import app.core.config
