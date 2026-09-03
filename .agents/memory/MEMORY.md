@@ -9,5 +9,7 @@
 - [project] Backend: Python, FastAPI, librosa, Groq Whisper, Gemini 3.5 Flash-Lite → tech-decisions.md
 - [project] SpeakFlow design uses CSS vars (--bg-base), DM Sans, JetBrains Mono → project-conventions.md
 - [project] SpeakFlow architecture uses 2-phase responses (Phase 1 fast, Phase 2 async) → tech-decisions.md
-- [session] Frontend Phases 1-11 complete, instrumented, verified via Playwright. Backend Phase A scaffold complete. Phases 12-15 paused pending backend completion.
+- [session] Frontend Phases 1-11 complete, instrumented, verified via Playwright. Phases 12-15 paused pending backend completion.
+- [session] Backend Phase A (Project Scaffold & Config) complete.
 - [session] Backend Phase B (Groq Whisper Integration) complete. Real API keys inserted and tested successfully.
+- [session] Backend Phase C (Librosa Acoustic Engine) complete. Implemented feature extraction and scoring. Testing skipped locally due to hardware MemoryError on librosa import.
