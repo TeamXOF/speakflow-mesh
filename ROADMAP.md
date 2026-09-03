@@ -856,7 +856,7 @@ const DEMO_STUDENTS = [
 > **Model:** Flash 3.8  
 > **Reference:** `Context/speakflow_roadmap_architecture.md`, Part 4, Prompt 1
 
-- [ ] **A.1** Create a `backend` folder and set up this structure inside it:
+- [x] **A.1** Create a `backend` folder and set up this structure inside it:
   ```
   /backend
     /app
@@ -872,9 +872,9 @@ const DEMO_STUDENTS = [
   .env.example    (GROQ_API_KEY, GEMINI_API_KEY, GEMINI_API_KEY_DEMO, ENV=dev|demo)
   requirements.txt
   ```
-- [ ] **A.2** `app/core/config.py` — single `Settings` object loading from `.env` via `python-dotenv`. **No other file reads `os.environ` directly.**
-- [ ] **A.3** `GET /api/v1/health` endpoint returning `{ mode, groq_reachable, gemini_reachable, server_time }` (reachability stubbed for now)
-- [ ] **A.4** `requirements.txt`: `fastapi`, `uvicorn`, `python-dotenv`, `librosa`, `groq`, `google-generativeai`, `faster-whisper`, `aiosqlite`
+- [x] **A.2** `app/core/config.py` — single `Settings` object loading from `.env` via `python-dotenv`. **No other file reads `os.environ` directly.**
+- [x] **A.3** `GET /api/v1/health` endpoint returning `{ mode, groq_reachable, gemini_reachable, server_time }` (reachability stubbed for now)
+- [x] **A.4** `requirements.txt`: `fastapi`, `uvicorn`, `python-dotenv`, `librosa`, `groq`, `google-generativeai`, `faster-whisper`, `aiosqlite`
 
 ### 🧪 How to Verify (Phase A)
 1. Navigate into the backend folder (`cd backend`) and run `pip install -r requirements.txt` — no errors.
@@ -889,9 +889,9 @@ const DEMO_STUDENTS = [
 > **Model:** Flash 3.8  
 > **Reference:** Prompt 2
 
-- [ ] **B.1** `groq_whisper(audio_bytes) -> TranscriptResult` — calls Groq API with 600ms timeout
-- [ ] **B.2** `TranscriptResult`: `{ text: str, words: [{ word, start_ms, end_ms }] }`
-- [ ] **B.3** Test script: `scripts/test_groq.py` — send 3 sample WAV files, print transcript + timestamps
+- [x] **B.1** `groq_whisper(audio_bytes) -> TranscriptResult` — calls Groq API with 600ms timeout
+- [x] **B.2** `TranscriptResult`: `{ text: str, words: [{ word, start_ms, end_ms }] }`
+- [x] **B.3** Test script: `scripts/test_groq.py` — send 3 sample WAV files, print transcript + timestamps
 
 ### 🧪 How to Verify (Phase B)
 1. Place 3 WAV recordings in `test_audio/` (record yourself saying the demo sentences).
