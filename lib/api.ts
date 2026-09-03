@@ -1,7 +1,3 @@
-export async function resolveApiBase() {
-  return { baseUrl: 'http://localhost:8000', mode: 'online' };
-}
-
 export type Phase1Response = {
   transcript: string;
   words: any[];
@@ -28,3 +24,101 @@ export type ErrorEnvelope = {
     retryable: boolean;
   };
 };
+
+let apiBaseCache: { 
+  baseUrl: string; 
+  mode: string; 
+  groq_reachable: boolean;
+  gemini_reachable: boolean;
+  expiresAt: number 
+} | null = null;
+
+export async function resolveApiBase() {
+  if (apiBaseCache && Date.now() < apiBaseCache.expiresAt) {
+    return apiBaseCache;
+  }
+
+  // Use relative path if running on same port, or explicit backend URL for dev
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  
+  try {
+    const res = await fetch(`${baseUrl}/api/v1/health`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+    });
+    
+    if (res.ok) {
+      const data = await res.json();
+      apiBaseCache = {
+        baseUrl,
+        mode: data.status === 'ok' ? 'online' : 'offline',
+        // Mock these as true when online until the real backend includes them
+        groq_reachable: data.status === 'ok',
+        gemini_reachable: data.status === 'ok',
+        expiresAt: Date.now() + 5000,
+      };
+      return apiBaseCache;
+    }
+  } catch (error) {
+    console.error('Health check failed:', error);
+  }
+  
+  return { baseUrl, mode: 'offline', groq_reachable: false, gemini_reachable: false };
+}
+
+// Helper to construct URL and throw on API errors
+async function fetchApi(path: string, options?: RequestInit) {
+  const { baseUrl } = await resolveApiBase();
+  const res = await fetch(`${baseUrl}${path}`, options);
+  
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.error?.message || `API error: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function createSession(studentId: string, storyId: string, language: string) {
+  return fetchApi('/api/v1/sessions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ student_id: studentId, story_id: storyId, language }),
+  });
+}
+
+export async function fetchSession(sessionId: string) {
+  return fetchApi(`/api/v1/sessions/${sessionId}`);
+}
+
+export async function fetchStudentDashboard(studentId: string) {
+  return fetchApi(`/api/v1/students/${studentId}/dashboard`);
+}
+
+export async function triggerSync() {
+  return fetchApi('/api/v1/sync', { method: 'POST' });
+}
+
+export async function analyzeCheckpoint(sessionId: string, checkpointId: string, audioBlob: Blob) {
+  const { baseUrl } = await resolveApiBase();
+  
+  const formData = new FormData();
+  // Provide a generic filename to the blob
+  formData.append('audio', audioBlob, 'audio.webm');
+  formData.append('checkpoint_id', checkpointId);
+
+  const res = await fetch(`${baseUrl}/api/v1/sessions/${sessionId}/analyze`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.error?.message || `Analyze error: ${res.status}`);
+  }
+
+  return res.json() as Promise<Phase1Response>;
+}
+
+export async function fetchFeedback(sessionId: string, checkpointId: string) {
+  return fetchApi(`/api/v1/sessions/${sessionId}/feedback?checkpoint_id=${checkpointId}`) as Promise<Phase2Response>;
+}

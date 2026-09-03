@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSpeakFlow } from '../Context/SpeakFlowContext';
 
 export type FlowState = 'map' | 'checkpoint' | 'feedback' | 'rewards';
 export type ChapterStatus = 'locked' | 'in_progress' | 'completed';
@@ -35,7 +36,7 @@ interface ReadingSessionState {
   currentCheckpointIndex: number;
   flowState: FlowState;
   
-  startChapter: (chapterId: string) => void;
+  startChapter: (chapterId: string) => Promise<void>;
   finishRecording: () => void;
   showRewards: () => void;
   continueAdventure: () => void;
@@ -46,6 +47,7 @@ const ReadingSessionContext = createContext<ReadingSessionState | undefined>(und
 
 export function ReadingSessionProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const { startNewSession } = useSpeakFlow();
   
   const [totalStars, setTotalStars] = useState(285);
   const [chapters, setChapters] = useState<Chapter[]>(DEMO_CHAPTERS);
@@ -54,9 +56,12 @@ export function ReadingSessionProvider({ children }: { children: ReactNode }) {
   const [currentCheckpointIndex, setCurrentCheckpointIndex] = useState(0);
   const [flowState, setFlowState] = useState<FlowState>('map');
 
-  const startChapter = (chapterId: string) => {
+  const startChapter = async (chapterId: string) => {
     const chapter = chapters.find(c => c.id === chapterId);
     if (!chapter || chapter.status === 'locked') return;
+    
+    // Start session in backend
+    await startNewSession('student_123', chapterId, 'en');
     
     setCurrentChapterId(chapterId);
     // Start at their current completed count. If already at 5, start over at 0 for replay.
