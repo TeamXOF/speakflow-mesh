@@ -906,10 +906,10 @@ const DEMO_STUDENTS = [
 > **Model:** Gemini 3.1 Pro  
 > **Reference:** Prompt 3
 
-- [ ] **C.1** `extract_features(audio_bytes, word_timespan) -> FeatureVector` — pitch contour, F1/F2 formants, ZCR, spectral energy
-- [ ] **C.2** `score_against_reference(feature_vector, reference_vector) -> float` (0–100 composite)
-- [ ] **C.3** Correctness threshold: `CORRECT_THRESHOLD = 70` in `app/core/config.py` — **never hardcoded inline**
-- [ ] **C.4** Test script: `scripts/test_acoustic.py`
+- [x] **C.1** `extract_features(audio_bytes, word_timespan) -> FeatureVector` — pitch contour, F1/F2 formants, ZCR, spectral energy
+- [x] **C.2** `score_against_reference(feature_vector, reference_vector) -> float` (0–100 composite)
+- [x] **C.3** Correctness threshold: `CORRECT_THRESHOLD = 70` in `app/core/config.py` — **never hardcoded inline**
+- [x] **C.4** Test script: `scripts/test_acoustic.py`
 
 ### 🧪 How to Verify (Phase C)
 1. Record 3 correct pronunciations and 3 deliberate mispronunciations of the same words.
@@ -924,10 +924,10 @@ const DEMO_STUDENTS = [
 > **Model:** Flash 3.8  
 > **Reference:** Prompt 4
 
-- [ ] **D.1** `ReferenceDictionary` — loads `/data/phoneme_dictionary.json`
-- [ ] **D.2** `manual_overrides.json` — overrides for high-stakes Urdu pairs (ق/ک, ع, ح, خ)
-- [ ] **D.3** `scripts/build_dictionary.py` — documents expected JSON shape
-- [ ] **D.4** Wire into `score_against_reference`: `lookup(word, language) -> reference FeatureVector`
+- [x] **D.1** `ReferenceDictionary` — loads `/data/phoneme_dictionary.json`
+- [x] **D.2** `manual_overrides.json` — overrides for high-stakes Urdu pairs (ق/ک, ع, ح, خ)
+- [x] **D.3** `scripts/build_dictionary.py` — documents expected JSON shape
+- [x] **D.4** Wire into `score_against_reference`: `lookup(word, language) -> reference FeatureVector`
 
 ### 🧪 How to Verify (Phase D)
 1. Run `python -c "from app.services.dictionary.reference_dictionary import ReferenceDictionary; d = ReferenceDictionary(); print(d.lookup('rabbit', 'en'))"`.

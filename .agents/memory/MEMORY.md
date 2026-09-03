@@ -12,4 +12,5 @@
 - [session] Frontend Phases 1-11 complete, instrumented, verified via Playwright. Phases 12-15 paused pending backend completion.
 - [session] Backend Phase A (Project Scaffold & Config) complete.
 - [session] Backend Phase B (Groq Whisper Integration) complete. Real API keys inserted and tested successfully.
-- [session] Backend Phase C (Librosa Acoustic Engine) complete. Implemented feature extraction and scoring. Testing skipped locally due to hardware MemoryError on librosa import.
+- [session] Backend Phase C (Librosa Acoustic Engine) complete. Implemented feature extraction and scoring. Verified by user with 54-point gap.
+- [session] Backend Phase D (Phoneme Reference Dictionary) complete. Implemented ReferenceDictionary with manual overrides and tests.

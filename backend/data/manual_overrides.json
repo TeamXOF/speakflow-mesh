@@ -1,0 +1,14 @@
+{
+  "ur_qaf": {
+    "pitch_mean": 320.0,
+    "pitch_std": 8.0,
+    "f1_mean": 750.0,
+    "f1_std": 15.0,
+    "f2_mean": 1400.0,
+    "f2_std": 25.0,
+    "zcr_mean": 0.045,
+    "zcr_std": 0.005,
+    "energy_mean": 0.9,
+    "energy_std": 0.05
+  }
+}
