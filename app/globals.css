@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+:root {
+  --bg-base: #FAF7F2;
+  --card-bg: #FFFFFF;
+  --accent-primary: #C9BFF0;
+  --accent-secondary: #F5C6D8;
+  --text-primary: #1A1A1A;
+  --text-secondary: #484848;
+  --success: #34C759;
+  --warning: #FFB020;
+  --error: #FF4D4F;
+  --border-color: #1A1A1A;
+}
+
+@theme inline {
+  --color-bg-base: var(--bg-base);
+  --color-card-bg: var(--card-bg);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-border-color: var(--border-color);
+  
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-dm-sans), sans-serif;
+}
+
+.speakflow-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+}
