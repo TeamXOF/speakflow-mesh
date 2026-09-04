@@ -5,6 +5,12 @@ import { resolveApiBase, triggerSync } from '@/lib/api';
 import { useSpeakFlow } from '@/Context/SpeakFlowContext';
 import { Server, Activity, Database, Lock, RefreshCw, CheckCircle2, XCircle } from 'lucide-react';
 
+const StatusIcon = ({ isReachable }: { isReachable: boolean }) => (
+  isReachable 
+    ? <CheckCircle2 className="w-5 h-5 text-[var(--success)]" />
+    : <XCircle className="w-5 h-5 text-[var(--error)]" />
+);
+
 export default function SettingsPage() {
   const { addNotification } = useSpeakFlow();
   const [health, setHealth] = useState<{ mode: string, groq_reachable: boolean, gemini_reachable: boolean }>({
@@ -36,12 +42,6 @@ export default function SettingsPage() {
       setIsSyncing(false);
     }
   };
-
-  const StatusIcon = ({ isReachable }: { isReachable: boolean }) => (
-    isReachable 
-      ? <CheckCircle2 className="w-5 h-5 text-[var(--success)]" />
-      : <XCircle className="w-5 h-5 text-[var(--error)]" />
-  );
 
   return (
     <div className="p-8 max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">

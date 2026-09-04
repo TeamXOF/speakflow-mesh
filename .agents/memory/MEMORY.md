@@ -18,3 +18,5 @@
 - [session] Backend Phase F (Local Whisper Fallback) complete. Integrated faster-whisper (tiny.en) for offline STT fallback and DNS-based network reachability detection with TTL.
 - [session] Backend Phase G (WebSocket Local Mesh) complete. Implemented 2-phase messaging and LAN binding.
 - [session] Backend Phase H (Cloud Sync-on-Reconnect) complete. Implemented aiosqlite local persistence and background sync task.
+- [reference] Phase J and K: COMPLETE. Backend fallbacks, telemetry, integration, and demo freeze complete -> ROADMAP.md
+- [session] Frontend Phase 10 (API Integration & Wiring) complete. Fully wired frontend Context to FastAPI backend on port 8003. Fixed cascading rendering loops and lint issues.

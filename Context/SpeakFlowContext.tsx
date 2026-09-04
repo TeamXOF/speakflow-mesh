@@ -57,15 +57,15 @@ export function SpeakFlowProvider({ children }: { children: React.ReactNode }) {
   const wsRef = useRef<WebSocket | null>(null);
   const pollingRef = useRef<NodeJS.Timeout | null>(null);
 
+  const removeNotification = useCallback((id: string) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
+  }, []);
+
   const addNotification = useCallback((type: ToastMessage['type'], message: string) => {
     const id = Math.random().toString(36).substr(2, 9);
     setToasts(prev => [...prev, { id, type, message }]);
     setTimeout(() => removeNotification(id), 5000);
-  }, []);
-
-  const removeNotification = useCallback((id: string) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
-  }, []);
+  }, [removeNotification]);
 
   const addPipelineLog = useCallback((msg: string) => {
     const timestamp = new Date().toLocaleTimeString();

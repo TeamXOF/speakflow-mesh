@@ -17,13 +17,13 @@ export function useAudioRecorder() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<BlobPart[]>([]);
 
-  const updateWaveform = useCallback(() => {
+  const updateWaveform = () => {
     if (!analyserRef.current) return;
     const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
     analyserRef.current.getByteFrequencyData(dataArray);
     setAudioData(new Uint8Array(dataArray));
     requestRef.current = requestAnimationFrame(updateWaveform);
-  }, []);
+  };
 
   const startRecording = async () => {
     try {
