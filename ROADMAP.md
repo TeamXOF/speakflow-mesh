@@ -773,10 +773,10 @@ const DEMO_STUDENTS = [
 > **Model:** Gemini 3.1 Pro  
 > **Goal:** Add language selector and Urdu text rendering.
 
-- [ ] **13.1** Add language selector (`English` / `اردو`) to the session-start flow — before the first checkpoint, the student or teacher picks the language
-- [ ] **13.2** Load Noto Nastaliq Urdu font via `next/font/google` (or direct Google Fonts import)
-- [ ] **13.3** Apply font + `dir="rtl"` **only** to target-sentence display and live-transcript blocks when `language === "ur"` — all other chrome (sidebar, topbar, buttons, labels) must remain LTR / DM Sans
-- [ ] **13.4** Verify phoneme pair display for Urdu: ق/ک, ع, ح, خ render correctly in word chip components
+- [x] **13.1** Add language selector (`English` / `اردو`) to the session-start flow — before the first checkpoint, the student or teacher picks the language
+- [x] **13.2** Load Noto Nastaliq Urdu font via `next/font/google` (or direct Google Fonts import)
+- [x] **13.3** Apply font + `dir="rtl"` **only** to target-sentence display and live-transcript blocks when `language === "ur"` — all other chrome (sidebar, topbar, buttons, labels) must remain LTR / DM Sans
+- [x] **13.4** Verify phoneme pair display for Urdu: ق/ک, ع, ح, خ render correctly in word chip components
 
 ### 🧪 How to Verify (Phase 13)
 1. Start a new reading session and select "اردو" (Urdu) as the language.

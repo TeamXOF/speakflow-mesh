@@ -51,10 +51,9 @@ export async function resolveApiBase() {
       const data = await res.json();
       apiBaseCache = {
         baseUrl,
-        mode: data.status === 'ok' ? 'online' : 'offline',
-        // Mock these as true when online until the real backend includes them
-        groq_reachable: data.status === 'ok',
-        gemini_reachable: data.status === 'ok',
+        mode: data.mode || 'offline',
+        groq_reachable: !!data.groq_reachable,
+        gemini_reachable: !!data.gemini_reachable,
         expiresAt: Date.now() + 5000,
       };
       return apiBaseCache;
@@ -90,6 +89,18 @@ export async function fetchSession(sessionId: string) {
   return fetchApi(`/api/v1/sessions/${sessionId}`);
 }
 
+export async function fetchClassDashboard() {
+  return fetchApi('/api/v1/students/class/dashboard');
+}
+
+export async function fetchStudentsList() {
+  return fetchApi('/api/v1/students');
+}
+
+export async function fetchAllSessions() {
+  return fetchApi('/api/v1/sessions');
+}
+
 export async function fetchStudentDashboard(studentId: string) {
   return fetchApi(`/api/v1/students/${studentId}/dashboard`);
 }
@@ -120,5 +131,6 @@ export async function analyzeCheckpoint(sessionId: string, checkpointId: string,
 }
 
 export async function fetchFeedback(sessionId: string, checkpointId: string) {
-  return fetchApi(`/api/v1/sessions/${sessionId}/feedback?checkpoint_id=${checkpointId}`) as Promise<Phase2Response>;
+  return fetchApi(`/api/v1/sessions/${sessionId}/feedback/${checkpointId}`) as Promise<Phase2Response>;
 }
+

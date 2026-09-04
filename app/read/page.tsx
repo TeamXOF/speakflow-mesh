@@ -5,7 +5,7 @@ import StarBadge from '@/components/ChapterMap/StarBadge';
 import MapNode from '@/components/ChapterMap/MapNode';
 
 export default function StoryMapPage() {
-  const { totalStars, chapters, startChapter } = useReadingSession();
+  const { totalStars, chapters, startChapter, language, setLanguage } = useReadingSession();
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-sky-200 font-sans">
@@ -24,7 +24,32 @@ export default function StoryMapPage() {
           <h1 className="text-3xl font-bold text-[var(--text-primary)]">Your Journey</h1>
           <p className="text-[var(--text-secondary)] font-medium">Choose a chapter to continue</p>
         </div>
-        <StarBadge count={totalStars} />
+        
+        <div className="flex items-center gap-4">
+          <div className="bg-white/90 backdrop-blur-sm p-1 rounded-full shadow-lg border border-gray-200 flex">
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-4 py-2 rounded-full font-bold text-sm transition-all ${
+                language === 'en' 
+                  ? 'bg-[var(--accent-primary)] text-white shadow-sm' 
+                  : 'text-[var(--text-secondary)] hover:bg-gray-100'
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLanguage('ur')}
+              className={`px-4 py-2 rounded-full font-bold text-sm transition-all font-[var(--font-urdu)] ${
+                language === 'ur' 
+                  ? 'bg-[var(--accent-primary)] text-white shadow-sm' 
+                  : 'text-[var(--text-secondary)] hover:bg-gray-100'
+              }`}
+            >
+              اردو
+            </button>
+          </div>
+          <StarBadge count={totalStars} />
+        </div>
       </div>
 
       {/* Map Nodes Container */}

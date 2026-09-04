@@ -24,7 +24,9 @@ def groq_whisper(audio_bytes: bytes) -> TranscriptResult:
     try:
         client = Groq(api_key=settings.GROQ_API_KEY, timeout=0.6)
         
-        file_obj = ("audio.wav", io.BytesIO(audio_bytes), "audio/wav")
+        # The API requires a tuple of (filename, file-like object, content_type)
+        # Using .webm helps Groq's internal FFmpeg process decode it correctly
+        file_obj = ("audio.webm", io.BytesIO(audio_bytes), "audio/webm")
         
         response = client.audio.transcriptions.create(
             model="whisper-large-v3",

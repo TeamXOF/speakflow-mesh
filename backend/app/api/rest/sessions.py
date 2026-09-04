@@ -9,7 +9,10 @@ from app.api.models import (
     ErrorCode,
     ErrorDetail
 )
-from app.storage.database import save_session, get_session, update_session_metrics, save_latency_log
+from app.storage.database import (
+    save_session, get_session, update_session_metrics, save_latency_log,
+    save_checkpoint_phase1, update_checkpoint_phase2, get_session_details, get_all_sessions
+)
 from app.services.stt.wrapper import get_transcript
 from app.services.stt.local_whisper import local_whisper
 from app.services.acoustic.feature_extractor import extract_features
@@ -81,6 +84,8 @@ async def _process_phase2(session_id: str, checkpoint_id: str, transcript: str, 
         all_latencies = {**phase1_latencies, "gemini": int((t1 - t0)*1000)}
         await save_latency_log(session_id, checkpoint_id, all_latencies)
         
+        await update_checkpoint_phase2(session_id, checkpoint_id, feedback_text, feedback_source, engagement)
+        
     except Exception as e:
         # Save a basic fallback
         PHASE2_RESULTS[f"{session_id}_{checkpoint_id}"] = Phase2Response(
@@ -96,6 +101,8 @@ async def _process_phase2(session_id: str, checkpoint_id: str, transcript: str, 
         
         all_latencies = {**phase1_latencies, "gemini": 0}
         await save_latency_log(session_id, checkpoint_id, all_latencies)
+        
+        await update_checkpoint_phase2(session_id, checkpoint_id, "Good effort! Keep practicing those tricky words.", "fallback", "neutral")
 
 @router.post("/sessions/{session_id}/analyze", response_model=Phase1Response)
 async def analyze_checkpoint(
@@ -128,29 +135,47 @@ async def analyze_checkpoint(
     words_result = []
     total_score = 0
     language = session["language"]
-    
-    for w in transcript_res.words:
+
+    # If STT returned no word timestamps, synthesize them from the transcript text.
+    # This happens with local whisper on non-English audio or when Groq omits word-level data.
+    effective_words = transcript_res.words
+    if not effective_words and transcript_res.text.strip():
+        tokens = transcript_res.text.strip().split()
+        avg_duration_ms = int((transcript_res.duration * 1000) / len(tokens)) if tokens else 500
+        synthetic_words = []
+        cursor = 0
+        from app.services.stt.groq_whisper import WordTimestamp
+        for token in tokens:
+            synthetic_words.append(WordTimestamp(
+                word=token,
+                start_ms=cursor,
+                end_ms=cursor + avg_duration_ms
+            ))
+            cursor += avg_duration_ms
+        effective_words = synthetic_words
+
+    for w in effective_words:
         feat = extract_features(audio_bytes, start_ms=w.start_ms, end_ms=w.end_ms)
         try:
             ref_feat = dictionary.lookup(w.word, language)
         except WordNotFoundError:
             ref_feat = None
-            
+
         word_score = score_against_reference(feat, ref_feat) if ref_feat else 80.0
-        
+
         is_correct = word_score >= settings.CORRECT_THRESHOLD
         total_score += word_score
-        
+
         words_result.append({
             "word": w.word,
             "correct": is_correct,
             "phoneme_mismatch": None if is_correct else "generic_mismatch"
         })
-        
+
     t2 = time.time()
-    
+
     avg_score = total_score / len(words_result) if words_result else 0
-    duration_mins = (transcript_res.words[-1].end_ms if transcript_res.words else 0) / 60000.0
+    duration_mins = (effective_words[-1].end_ms if effective_words else 0) / 60000.0
     wpm = len(words_result) / duration_mins if duration_mins > 0 else 0
     
     # Update DB
@@ -165,6 +190,8 @@ async def analyze_checkpoint(
         "scoring": int((t3 - t2)*1000),
         "total_phase1": int((t3 - t0)*1000)
     }
+    
+    await save_checkpoint_phase1(session_id, checkpoint_id, transcript_res.text, stt_source, words_result)
 
     phase1 = Phase1Response(
         session_id=session_id,
@@ -193,12 +220,19 @@ async def analyze_checkpoint(
     
     return phase1
 
-@router.get("/sessions/{session_id}", response_model=SessionSummary)
+@router.get("/sessions", response_model=list[SessionSummary])
+async def get_sessions(limit: int = 50):
+    sessions = await get_all_sessions(limit)
+    return [SessionSummary(**s) for s in sessions]
+
+from app.api.models import SessionDetailResponse
+
+@router.get("/sessions/{session_id}", response_model=SessionDetailResponse)
 async def get_session_summary(session_id: str):
-    session = await get_session(session_id)
+    session = await get_session_details(session_id)
     if not session:
         raise HTTPException(status_code=404, detail={"code": ErrorCode.SESSION_NOT_FOUND, "message": "Session not found", "retryable": False})
-    return SessionSummary(**session)
+    return SessionDetailResponse(**session)
 
 @router.get("/sessions/{session_id}/feedback/{checkpoint_id}", response_model=Phase2Response)
 async def get_phase2_feedback(session_id: str, checkpoint_id: str):

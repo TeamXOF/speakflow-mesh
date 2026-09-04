@@ -86,9 +86,42 @@ class SessionSummary(BaseModel):
     synced: bool
     local_created_at: str
 
+class StrugglingWord(BaseModel):
+    word: str
+    misses: int
+
 class DashboardMetrics(BaseModel):
     student_id: str
     active_sessions: int
     average_accuracy: float
     average_wpm: float
     improvement: float
+    struggling_words: List[StrugglingWord] = []
+
+class ClassDashboardMetrics(BaseModel):
+    active_students: int
+    daily_sessions: int
+    class_accuracy: float
+    improvement: float
+
+class StudentRosterItem(BaseModel):
+    id: str
+    name: str
+    level: int
+    age: int
+    last_active: str
+    status: str
+    
+class CheckpointDetail(BaseModel):
+    id: int
+    session_id: str
+    checkpoint_id: str
+    transcript: Optional[str]
+    stt_source: Optional[str]
+    feedback_text: Optional[str]
+    feedback_source: Optional[str]
+    engagement_state: Optional[str]
+    words: List[WordResult]
+
+class SessionDetailResponse(SessionSummary):
+    checkpoints: List[CheckpointDetail]

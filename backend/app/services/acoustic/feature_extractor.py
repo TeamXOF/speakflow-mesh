@@ -1,16 +1,42 @@
 import io
+import av
 import librosa
 import numpy as np
 from typing import Optional
 from app.services.acoustic.models import FeatureVector
+
+def decode_audio(audio_bytes: bytes) -> tuple[np.ndarray, int]:
+    """Decodes audio bytes (e.g. WebM) into a mono float32 NumPy array using PyAV."""
+    container = av.open(io.BytesIO(audio_bytes))
+    stream = next(s for s in container.streams if s.type == 'audio')
+    
+    frames = []
+    for frame in container.decode(stream):
+        arr = frame.to_ndarray()
+        arr = arr.astype(np.float32)
+        
+        # Normalize int16 PCM to [-1.0, 1.0]
+        if frame.format.name in ('s16', 's16p'):
+            arr = arr / 32768.0
+            
+        # Convert to mono if multi-channel
+        if arr.shape[0] > 1:
+            arr = np.mean(arr, axis=0)
+        else:
+            arr = arr[0]
+            
+        frames.append(arr)
+        
+    y = np.concatenate(frames) if frames else np.array([], dtype=np.float32)
+    return y, stream.rate
 
 def extract_features(audio_bytes: bytes, start_ms: int = 0, end_ms: Optional[int] = None) -> FeatureVector:
     """
     Extracts aggregated acoustic features from an audio snippet.
     Returns a FeatureVector containing mean/std values.
     """
-    # Load audio using librosa
-    y, sr = librosa.load(io.BytesIO(audio_bytes), sr=None)
+    # Decode audio using PyAV to support WebM
+    y, sr = decode_audio(audio_bytes)
     
     # Slice the audio if timestamps are provided
     start_sample = int((start_ms / 1000.0) * sr)

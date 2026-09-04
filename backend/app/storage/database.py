@@ -43,6 +43,29 @@ async def init_db():
                 created_at TIMESTAMP NOT NULL
             )
         ''')
+        await db.execute('''
+            CREATE TABLE IF NOT EXISTS session_checkpoints (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                session_id TEXT NOT NULL,
+                checkpoint_id TEXT NOT NULL,
+                transcript TEXT,
+                stt_source TEXT,
+                feedback_text TEXT,
+                feedback_source TEXT,
+                engagement_state TEXT,
+                UNIQUE(session_id, checkpoint_id)
+            )
+        ''')
+        await db.execute('''
+            CREATE TABLE IF NOT EXISTS session_words (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                session_id TEXT NOT NULL,
+                checkpoint_id TEXT NOT NULL,
+                word TEXT NOT NULL,
+                correct BOOLEAN NOT NULL,
+                phoneme_mismatch TEXT
+            )
+        ''')
         # Simple migrations for existing DB
         try:
             await db.execute('ALTER TABLE sessions ADD COLUMN total_words INTEGER DEFAULT 0')
@@ -134,3 +157,86 @@ async def update_session_metrics(session_id: str, score: float, total_words: int
             WHERE id = ?
         ''', (score, total_words, correct_words, wpm, session_id))
         await db.commit()
+
+async def save_checkpoint_phase1(session_id: str, checkpoint_id: str, transcript: str, stt_source: str, words: list):
+    """Saves Phase 1 data: checkpoint transcript and word-level results."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute('''
+            INSERT OR IGNORE INTO session_checkpoints (session_id, checkpoint_id, transcript, stt_source)
+            VALUES (?, ?, ?, ?)
+        ''', (session_id, checkpoint_id, transcript, stt_source))
+        
+        # Save words
+        word_records = [(session_id, checkpoint_id, w['word'], w['correct'], w.get('phoneme_mismatch')) for w in words]
+        await db.executemany('''
+            INSERT INTO session_words (session_id, checkpoint_id, word, correct, phoneme_mismatch)
+            VALUES (?, ?, ?, ?, ?)
+        ''', word_records)
+        await db.commit()
+
+async def update_checkpoint_phase2(session_id: str, checkpoint_id: str, feedback_text: str, feedback_source: str, engagement_state: str):
+    """Updates the checkpoint with Phase 2 feedback."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute('''
+            UPDATE session_checkpoints 
+            SET feedback_text = ?, feedback_source = ?, engagement_state = ?
+            WHERE session_id = ? AND checkpoint_id = ?
+        ''', (feedback_text, feedback_source, engagement_state, session_id, checkpoint_id))
+        await db.commit()
+
+async def get_session_details(session_id: str) -> dict | None:
+    """Retrieves full session details including checkpoints and words."""
+    session = await get_session(session_id)
+    if not session:
+        return None
+        
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        
+        # Get checkpoints
+        async with db.execute('SELECT * FROM session_checkpoints WHERE session_id = ?', (session_id,)) as cursor:
+            checkpoints = [dict(row) for row in await cursor.fetchall()]
+            
+        # Get words
+        async with db.execute('SELECT * FROM session_words WHERE session_id = ?', (session_id,)) as cursor:
+            words = [dict(row) for row in await cursor.fetchall()]
+            
+    # Group words by checkpoint
+    for cp in checkpoints:
+        cp['words'] = [w for w in words if w['checkpoint_id'] == cp['checkpoint_id']]
+        
+    session['checkpoints'] = checkpoints
+    return session
+
+async def get_all_sessions(limit: int = 50) -> list:
+    """Retrieves all sessions across all students."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute('SELECT * FROM sessions ORDER BY local_created_at DESC LIMIT ?', (limit,)) as cursor:
+            return [dict(row) for row in await cursor.fetchall()]
+
+async def get_all_students() -> list:
+    """Mock student roster by finding unique student_ids from sessions."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute('''
+            SELECT student_id, MAX(local_created_at) as last_active, COUNT(id) as total_sessions 
+            FROM sessions 
+            GROUP BY student_id
+        ''') as cursor:
+            return [dict(row) for row in await cursor.fetchall()]
+
+async def get_student_struggling_words(student_id: str, limit: int = 10) -> list:
+    """Gets the words the student misses most often."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute('''
+            SELECT w.word, COUNT(w.id) as misses
+            FROM session_words w
+            JOIN sessions s ON w.session_id = s.id
+            WHERE s.student_id = ? AND w.correct = 0
+            GROUP BY w.word
+            ORDER BY misses DESC
+            LIMIT ?
+        ''', (student_id, limit)) as cursor:
+            return [dict(row) for row in await cursor.fetchall()]

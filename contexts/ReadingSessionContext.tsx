@@ -29,18 +29,32 @@ export const DEMO_CHECKPOINTS = [
   { checkpoint_id: "cp_5", target_text: "All the forest animals gathered to celebrate together." },
 ];
 
+export const URDU_CHECKPOINTS = [
+  { checkpoint_id: "cp_1", target_text: "بہادر چھوٹا خرگوش گھاس کے میدان میں اچھلتا رہا۔" },
+  { checkpoint_id: "cp_2", target_text: "چھوٹے مہم جو نے آہستہ آہستہ کھڑی پہاڑ پر چڑھائی کی۔" },
+  { checkpoint_id: "cp_3", target_text: "اس نے اونچے گہرے درختوں کے درمیان ایک چھپی ہوئی پگڈنڈی ڈھونڈی۔" },
+  { checkpoint_id: "cp_4", target_text: "سنہری چابی نے چمکتے ہیروں سے بھرے صندوق کو کھولا۔" },
+  { checkpoint_id: "cp_5", target_text: "جنگل کے تمام جانور مل کر جشن منانے کے لیے جمع ہو گئے۔" },
+];
+
+export function getCheckpoints(language: 'en' | 'ur') {
+  return language === 'ur' ? URDU_CHECKPOINTS : DEMO_CHECKPOINTS;
+}
+
 interface ReadingSessionState {
   totalStars: number;
   chapters: Chapter[];
   currentChapterId: string | null;
   currentCheckpointIndex: number;
   flowState: FlowState;
+  language: 'en' | 'ur';
   
   startChapter: (chapterId: string) => Promise<void>;
   finishRecording: () => void;
   showRewards: () => void;
   continueAdventure: () => void;
   goBackToMap: () => void;
+  setLanguage: (lang: 'en' | 'ur') => void;
 }
 
 const ReadingSessionContext = createContext<ReadingSessionState | undefined>(undefined);
@@ -55,13 +69,14 @@ export function ReadingSessionProvider({ children }: { children: ReactNode }) {
   const [currentChapterId, setCurrentChapterId] = useState<string | null>(null);
   const [currentCheckpointIndex, setCurrentCheckpointIndex] = useState(0);
   const [flowState, setFlowState] = useState<FlowState>('map');
+  const [language, setLanguage] = useState<'en' | 'ur'>('en');
 
   const startChapter = async (chapterId: string) => {
     const chapter = chapters.find(c => c.id === chapterId);
     if (!chapter || chapter.status === 'locked') return;
     
-    // Start session in backend
-    await startNewSession('student_123', chapterId, 'en');
+    // Start session in backend using active language
+    await startNewSession('stu_001', chapterId, language);
     
     setCurrentChapterId(chapterId);
     // Start at their current completed count. If already at 5, start over at 0 for replay.
@@ -139,11 +154,13 @@ export function ReadingSessionProvider({ children }: { children: ReactNode }) {
       currentChapterId,
       currentCheckpointIndex,
       flowState,
+      language,
       startChapter,
       finishRecording,
       showRewards,
       continueAdventure,
-      goBackToMap
+      goBackToMap,
+      setLanguage
     }}>
       {children}
     </ReadingSessionContext.Provider>

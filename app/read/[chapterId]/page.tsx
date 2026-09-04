@@ -7,7 +7,7 @@ import MicButton from '@/components/Checkpoint/MicButton';
 import WaveformVisualizer from '@/components/Checkpoint/WaveformVisualizer';
 import ReadingPrompt from '@/components/Checkpoint/ReadingPrompt';
 import { useAudioRecorder } from '@/hooks/useAudioRecorder';
-import { useReadingSession, DEMO_CHECKPOINTS } from '@/contexts/ReadingSessionContext';
+import { useReadingSession, getCheckpoints } from '@/contexts/ReadingSessionContext';
 import { useSpeakFlow } from '@/Context/SpeakFlowContext';
 
 // Phase 3 imports
@@ -19,13 +19,14 @@ import PracticeSection from '@/components/Feedback/PracticeSection';
 import RewardsScreen from '@/components/Rewards/RewardsScreen';
 
 function CheckpointContent() {
-  const { flowState, finishRecording, showRewards, currentCheckpointIndex, continueAdventure } = useReadingSession();
+  const { flowState, finishRecording, showRewards, currentCheckpointIndex, continueAdventure, language } = useReadingSession();
   const { status, audioData, audioBlob, startRecording, stopRecording, resetAudio } = useAudioRecorder();
   
   // API Context
   const { phase1Result, phase2Result, pipelineState, recordAndAnalyzeCheckpoint } = useSpeakFlow();
   
-  const checkpoint = DEMO_CHECKPOINTS[currentCheckpointIndex % DEMO_CHECKPOINTS.length];
+  const checkpoints = getCheckpoints(language);
+  const checkpoint = checkpoints[currentCheckpointIndex % checkpoints.length];
   
   const hasAnalyzed = useRef(false);
   
@@ -100,7 +101,7 @@ function CheckpointContent() {
         
         {/* Word by Word Analysis */}
         <div className="w-full mt-2">
-          <WordAnalysis words={phase1Result.words} />
+          <WordAnalysis words={phase1Result.words} language={language} />
         </div>
 
         {/* Phase 2: Practice Section */}
@@ -133,7 +134,7 @@ function CheckpointContent() {
 
   return (
     <main className="relative z-10 flex-1 flex flex-col items-center justify-center p-8 pb-16 gap-16">
-      <ReadingPrompt text={checkpoint.target_text} />
+      <ReadingPrompt text={checkpoint.target_text} language={language} />
       
       <div className="flex flex-col items-center gap-8 w-full max-w-2xl">
         {/* Waveform container - fixed height so layout doesn't jump */}

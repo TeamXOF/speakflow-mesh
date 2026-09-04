@@ -20,3 +20,11 @@
 - [session] Backend Phase H (Cloud Sync-on-Reconnect) complete. Implemented aiosqlite local persistence and background sync task.
 - [reference] Phase J and K: COMPLETE. Backend fallbacks, telemetry, integration, and demo freeze complete -> ROADMAP.md
 - [session] Frontend Phase 10 (API Integration & Wiring) complete. Fully wired frontend Context to FastAPI backend on port 8003. Fixed cascading rendering loops and lint issues.
+- [session] Frontend Phases 11 (Settings & Network Monitor) + 12 (Offline Fallback UI) complete. Verified Playwright tests passing.
+- [session] Frontend Phase 13 (Urdu Support & Bilingual Feedback) in progress. Urdu checkpoints and ReadingSessionContext language switching implemented.
+- [bug-fix] Fixed backend 500 error: feature_extractor.py uses PyAV to decode WebM audio (soundfile/libsndfile cannot handle WebM). Backend must be restarted to pick up code changes.
+- [bug-fix] Fixed local_whisper.py: TranscriptResult now includes 'words: List[WordTimestamp]' field. Switched to multilingual 'tiny' model (was 'tiny.en') to support Urdu transcription.
+- [bug-fix] Fixed lib/api.ts fetchFeedback URL: was /feedback?checkpoint_id= (query param) should be /feedback/{checkpoint_id} (path param). This caused every feedback poll to return 404 → 0% accuracy forever.
+- [bug-fix] Fixed MetricPills.tsx: hardcoded "Good Reading!" label replaced with dynamic score-based label (Excellent/Great/Good Effort/Keep Practicing/Needs More Practice).
+- [bug-fix] Fixed sessions.py: when STT returns no word timestamps (Urdu fallback), synthetic words are generated from transcript text to avoid 0% accuracy.
+- [project] Backend port is 8003 (not 8000). Frontend uses NEXT_PUBLIC_API_URL env var or defaults to localhost:8000 — must set env to 8003 for dev.

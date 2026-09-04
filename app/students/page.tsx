@@ -1,20 +1,21 @@
-// trigger rebuild
 'use client';
 
 import Link from 'next/link';
 import { Search, Plus, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
-
-const DEMO_STUDENTS = [
-  { id: "stu_001", name: "Ayaan Khan", level: 2, age: 7, lastActive: "2 days ago", status: "active" },
-  { id: "stu_002", name: "Fatima Ali", level: 3, age: 8, lastActive: "Today", status: "active" },
-  { id: "stu_003", name: "Zain Ahmed", level: 1, age: 6, lastActive: "1 week ago", status: "inactive" },
-];
+import { useState, useEffect } from 'react';
+import { fetchStudentsList } from '@/lib/api';
 
 export default function StudentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [students, setStudents] = useState<any[]>([]);
 
-  const filteredStudents = DEMO_STUDENTS.filter(s => 
+  useEffect(() => {
+    fetchStudentsList().then(data => {
+      setStudents(data);
+    }).catch(console.error);
+  }, []);
+
+  const filteredStudents = students.filter(s => 
     s.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -68,15 +69,15 @@ export default function StudentsPage() {
                   Level {student.level} • {student.age} Years
                 </div>
                 <div className="hidden sm:block font-mono text-sm text-[var(--text-secondary)]">
-                  {student.lastActive}
+                  {new Date(student.last_active).toLocaleDateString()}
                 </div>
                 <div>
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    student.status === 'active' 
+                    student.status === 'Active' 
                       ? 'bg-[var(--success)]/10 text-[var(--success)]' 
                       : 'bg-gray-100 text-[var(--text-secondary)]'
                   }`}>
-                    {student.status === 'active' ? 'Active' : 'Inactive'}
+                    {student.status}
                   </span>
                 </div>
                 <div className="flex justify-end text-[var(--text-secondary)] group-hover:text-[var(--accent-primary)] transition-colors">
