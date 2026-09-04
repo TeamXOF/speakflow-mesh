@@ -1014,12 +1014,12 @@ const DEMO_STUDENTS = [
 > **Model:** Flash 3.8  
 > **Reference:** Prompt 9
 
-- [ ] **I.1** `POST /api/v1/sessions` → 201 with session + checkpoints
-- [ ] **I.2** `POST /api/v1/sessions/{id}/analyze` → multipart; Phase 1 immediate, Phase 2 via WS
-- [ ] **I.3** `GET /api/v1/sessions/{id}` → session summary
-- [ ] **I.4** `GET /api/v1/sessions/{id}/feedback/{checkpoint_id}` → polling for Phase 2
-- [ ] **I.5** `GET /api/v1/students/{id}/dashboard?range=session|week|all`
-- [ ] **I.6** All errors use the shared envelope with `code` enum
+- [x] **I.1** `POST /api/v1/sessions` → 201 with session + checkpoints
+- [x] **I.2** `POST /api/v1/sessions/{id}/analyze` → multipart; Phase 1 immediate, Phase 2 via WS
+- [x] **I.3** `GET /api/v1/sessions/{id}` → session summary
+- [x] **I.4** `GET /api/v1/sessions/{id}/feedback/{checkpoint_id}` → polling for Phase 2
+- [x] **I.5** `GET /api/v1/students/{id}/dashboard?range=session|week|all`
+- [x] **I.6** All errors use the shared envelope with `code` enum
 
 ### 🧪 How to Verify (Phase I)
 1. Run through this curl sequence:
@@ -1054,11 +1054,11 @@ const DEMO_STUDENTS = [
 > **Model:** Gemini 3.1 Pro  
 > **Reference:** Prompt 10
 
-- [ ] **J.1** `get_transcript(audio)` wrapper: tries Groq → falls back to local Whisper → tags `stt_source`
-- [ ] **J.2** `get_feedback(mismatch_data)` wrapper: tries Gemini → falls back to template bank → tags `feedback_source`
-- [ ] **J.3** Replace ALL direct calls with wrapper calls — no other code has try/except for these
-- [ ] **J.4** Per-request latency logging to a queryable log table
-- [ ] **J.5** `GET /api/v1/health` now runs real reachability checks (not stubbed)
+- [x] **J.1** `get_transcript(audio)` wrapper: tries Groq → falls back to local Whisper → tags `stt_source`
+- [x] **J.2** `get_feedback(mismatch_data)` wrapper: tries Gemini → falls back to template bank → tags `feedback_source`
+- [x] **J.3** Replace ALL direct calls with wrapper calls — no other code has try/except for these
+- [x] **J.4** Per-request latency logging to a queryable log table
+- [x] **J.5** `GET /api/v1/health` now runs real reachability checks (not stubbed)
 
 ### 🧪 How to Verify (Phase J)
 1. Set `GROQ_API_KEY` to a garbage value in `.env` → restart server.
@@ -1078,11 +1078,11 @@ const DEMO_STUDENTS = [
 > **Model:** Gemini 3.1 Pro  
 > **Final backend gate.**
 
-- [ ] **K.1** Full pipeline end-to-end: audio → Phase 1 JSON → Phase 2 via WebSocket — both English and Urdu
-- [ ] **K.2** Confusion matrix calibration: run the test recordings → any word that isn't stable gets **dropped from the demo**
-- [ ] **K.3** Switch to `GEMINI_API_KEY_DEMO` for demo day
-- [ ] **K.4** Confirm audio is never persisted (grep for file write operations on audio variables)
-- [ ] **K.5** Document that Phase E.2 (hesitation judgment) sends audio to Google's API
+- [x] **K.1** Full pipeline end-to-end: audio → Phase 1 JSON → Phase 2 via WebSocket — both English and Urdu
+- [x] **K.2** Confusion matrix calibration: run the test recordings → any word that isn't stable gets **dropped from the demo**
+- [x] **K.3** Switch to `GEMINI_API_KEY_DEMO` for demo day
+- [x] **K.4** Confirm audio is never persisted (grep for file write operations on audio variables)
+- [x] **K.5** Document that Phase E.2 (hesitation judgment) sends audio to Google's API
 
 ### 🧪 How to Verify (Phase K)
 1. Record yourself reading all 5 demo sentences correctly.

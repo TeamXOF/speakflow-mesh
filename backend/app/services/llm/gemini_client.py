@@ -6,6 +6,8 @@ from app.services.llm.exceptions import GeminiUnavailableError
 
 class GeminiFeedbackClient:
     def __init__(self, use_demo_key: bool = False):
+        if settings.ENV == "demo":
+            use_demo_key = True
         api_key = settings.GEMINI_API_KEY_DEMO if use_demo_key else settings.GEMINI_API_KEY
         if not api_key:
             raise GeminiUnavailableError("Gemini API key is not configured in settings.")

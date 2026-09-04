@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from app.api.models import ErrorEnvelope, ErrorDetail, ErrorCode
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timezone
 import logging
@@ -50,17 +53,67 @@ app.add_middleware(
 )
 
 from app.api.ws.sessions import router as ws_sessions_router
+from app.api.rest.sessions import router as rest_sessions_router
+from app.api.rest.students import router as rest_students_router
+
 app.include_router(ws_sessions_router)
+app.include_router(rest_sessions_router, prefix="/api/v1")
+app.include_router(rest_students_router, prefix="/api/v1/students")
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=400,
+        content=ErrorEnvelope(
+            error=ErrorDetail(
+                code=ErrorCode.VALIDATION_ERROR,
+                message=str(exc),
+                retryable=False
+            )
+        ).model_dump()
+    )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content=ErrorEnvelope(
+            error=ErrorDetail(
+                code=ErrorCode.INTERNAL_ERROR,
+                message=str(exc),
+                retryable=True
+            )
+        ).model_dump()
+    )
+
+import httpx
 
 @app.get("/api/v1/health")
 async def health_check():
     """
-    Health check endpoint. Reachability checks are stubbed out for now.
+    Health check endpoint. Checks reachability for Groq and Gemini.
     """
+    groq_reachable = False
+    gemini_reachable = False
+    
+    async with httpx.AsyncClient(timeout=1.0) as client:
+        try:
+            # Simple GET request to the base domains to check network path
+            res = await client.get("https://api.groq.com/")
+            groq_reachable = True
+        except Exception:
+            pass
+            
+        try:
+            res = await client.get("https://generativelanguage.googleapis.com/")
+            gemini_reachable = True
+        except Exception:
+            pass
+
     return {
         "mode": "online",
-        "groq_reachable": None,
-        "gemini_reachable": None,
+        "groq_reachable": groq_reachable,
+        "gemini_reachable": gemini_reachable,
         "server_time": datetime.now(timezone.utc).isoformat()
     }
 
