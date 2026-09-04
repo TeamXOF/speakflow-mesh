@@ -976,9 +976,9 @@ const DEMO_STUDENTS = [
 > **Model:** Gemini 3.1 Pro  
 > **Reference:** Prompt 7
 
-- [ ] **G.1** WebSocket route: `/ws/sessions/{session_id}`
-- [ ] **G.2** Accepts audio chunks → runs pipeline → pushes Phase 1, then Phase 2 as two JSON messages
-- [ ] **G.3** CLI flag `--local-host` binds server to LAN IP
+- [x] **G.1** WebSocket route: `/ws/sessions/{session_id}`
+- [x] **G.2** Accepts audio chunks → runs pipeline → pushes Phase 1, then Phase 2 as two JSON messages
+- [x] **G.3** CLI flag `--local-host` binds server to LAN IP
 
 ### 🧪 How to Verify (Phase G)
 1. Start the server: `uvicorn main:app`.
@@ -995,10 +995,10 @@ const DEMO_STUDENTS = [
 > **Model:** Flash 3.8  
 > **Reference:** Prompt 8
 
-- [ ] **H.1** SQLite: `synced BOOLEAN` + `local_created_at TIMESTAMP` on session results
-- [ ] **H.2** Offline writes → `synced = False`
-- [ ] **H.3** Background thread: checks `network_available()` every 30s; on `False→True` → syncs
-- [ ] **H.4** `POST /api/v1/sync` → manual trigger → `{ synced_count, failed_count }`
+- [x] **H.1** SQLite: `synced BOOLEAN` + `local_created_at TIMESTAMP` on session results
+- [x] **H.2** Offline writes → `synced = False`
+- [x] **H.3** Background thread: checks `network_available()` every 30s; on `False→True` → syncs
+- [x] **H.4** `POST /api/v1/sync` → manual trigger → `{ synced_count, failed_count }`
 
 ### 🧪 How to Verify (Phase H)
 1. Disable your network → run a session → check the SQLite DB.

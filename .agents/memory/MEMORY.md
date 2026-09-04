@@ -16,3 +16,5 @@
 - [session] Backend Phase D (Phoneme Reference Dictionary) complete. Implemented ReferenceDictionary with manual overrides and tests.
 - [session] Backend Phase E (Gemini 3.5 Flash-Lite Integration) complete. Implemented feedback and hesitation generation with SDK exceptions and timeouts.
 - [session] Backend Phase F (Local Whisper Fallback) complete. Integrated faster-whisper (tiny.en) for offline STT fallback and DNS-based network reachability detection with TTL.
+- [session] Backend Phase G (WebSocket Local Mesh) complete. Implemented 2-phase messaging and LAN binding.
+- [session] Backend Phase H (Cloud Sync-on-Reconnect) complete. Implemented aiosqlite local persistence and background sync task.
