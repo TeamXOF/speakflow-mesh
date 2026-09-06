@@ -1,0 +1,68 @@
+{
+  "en": {
+    "all_correct": {
+      "feedback_text": "Wow! You read every single word perfectly. You are a star reader!",
+      "comprehension_question": null,
+      "practice_recommendation": "Challenge time: try this tongue-twister three times fast — 'She sells seashells by the seashore.'",
+      "teacher_note": "Flawless read. Ready for a harder passage."
+    },
+    "strong": {
+      "feedback_text": "Great job! You read almost everything clearly. Just one tricky word — let's try '{word}' one more time, slowly and proudly.",
+      "comprehension_question": null,
+      "practice_recommendation": "Practice the word '{word}' — say it in two parts, then all together.",
+      "teacher_note": "Strong read; one word needs a retry."
+    },
+    "phoneme": {
+      "feedback_text": "Good try! That sound is a tricky one. Make the sound with your mouth first, then say '{word}' again — you can do it!",
+      "comprehension_question": null,
+      "practice_recommendation": "Practice the '{phoneme}' sound inside the word '{word}'.",
+      "teacher_note": "Sound-level struggle on '{phoneme}'; worth a quick drill."
+    },
+    "fluency": {
+      "feedback_text": "You knew every word! Now let's help the words flow like a river — take a big breath and read it a little faster.",
+      "comprehension_question": null,
+      "practice_recommendation": "Read the sentence twice, a little faster each time.",
+      "teacher_note": "Accuracy is fine; pace is the focus."
+    },
+    "hesitant": {
+      "feedback_text": "It's okay to stop and think — every great reader does! Take a deep breath, then read it from the start. You're doing great.",
+      "comprehension_question": null,
+      "practice_recommendation": "Read the sentence once with a grown-up, then once alone.",
+      "teacher_note": "Frequent pauses; confidence-building read recommended."
+    },
+    "practice_word_fmt": "Practice the word '{word}'."
+  },
+  "ur": {
+    "all_correct": {
+      "feedback_text": "شاباش! آپ نے ہر لفظ بالکل درست پڑھا۔ آپ ستارہ پڑھنے والے ہیں!",
+      "comprehension_question": null,
+      "practice_recommendation": "چیلنج: یہ مشکل جملہ تین بار تیزی سے پڑھیں۔",
+      "teacher_note": "مکمل درست پڑھائی۔ مشکل متن کے لیے تیار۔"
+    },
+    "strong": {
+      "feedback_text": "بہت خوب! آپ نے تقریباً ہر لفظ صاف پڑھا۔ بس ایک لفظ '{word}' دوبارہ آہستہ آہستہ پڑھیں۔",
+      "comprehension_question": null,
+      "practice_recommendation": "لفظ '{word}' کی مشق کریں — پہلے دو حصوں میں، پھر ملا کر۔",
+      "teacher_note": "اچھی پڑھائی؛ ایک لفظ دہرانا ہے۔"
+    },
+    "phoneme": {
+      "feedback_text": "اچھی کوشش! یہ آواز تھوڑی مشکل ہے۔ پہلے منہ سے یہ آواز نکالیں، پھر '{word}' دوبارہ کہیں۔",
+      "comprehension_question": null,
+      "practice_recommendation": "لفظ '{word}' میں '{phoneme}' آواز کی مشق کریں۔",
+      "teacher_note": "آواز کی سطح پر مشق درکار۔"
+    },
+    "fluency": {
+      "feedback_text": "آپ کو ہر لفظ یاد تھا! اب دھارے کی طرح روانی سے پڑھیں — گہرا سانس لیں اور ہلکی تیزی سے دہرائیں۔",
+      "comprehension_question": null,
+      "practice_recommendation": "جملہ دو بار پڑھیں، ہر بار تھوڑا تیز۔",
+      "teacher_note": "درستگی ٹھیک ہے؛ رفتار پر توجہ۔"
+    },
+    "hesitant": {
+      "feedback_text": "رک کر سوچنا اچھی بات ہے! گہرا سانس لیں اور شروع سے دوبارہ پڑھیں۔ آپ بہت اچھا کر رہے ہیں۔",
+      "comprehension_question": null,
+      "practice_recommendation": "ایک بار بڑے کے ساتھ، ایک بار اکیلے جملہ پڑھیں۔",
+      "teacher_note": "بار بار رکاوٹ؛ حوصلہ افزائی کی جائے۔"
+    },
+    "practice_word_fmt": "لفظ '{word}' کی مشق کریں۔"
+  }
+}

@@ -1,0 +1,15 @@
+# <type>(<scope>): <short summary under 72 chars>
+#
+# Types:
+#   feat     (new feature or capability)
+#   fix      (bug fix)
+#   refactor (code restructuring without feature/bug change)
+#   perf     (performance improvement)
+#   docs     (documentation only)
+#   test     (adding or fixing tests)
+#   chore    (build tasks, package updates, git setup)
+#
+# Multi-line explanation of what changed and why:
+# - Bullet 1
+# - Bullet 2
+# - Bullet 3

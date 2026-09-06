@@ -1,0 +1,25 @@
+{
+  "_meta": "Reference FeatureVectors per word/language. Values are PLACEHOLDER targets derived from typical child-voice statistics — replace them with hand-verified native-speaker recordings using scripts/build_dictionary.py (PronouncUR-assisted) before trusting reference blending for calibration. Vector fields: pitch_std (Hz), rms (linear), zcr (0-1), f1/f2 (Hz formants).",
+  "en": {
+    "the":     { "pitch_std": 14.0, "rms": 0.030, "zcr": 0.055, "f1": 450.0, "f2": 1600.0 },
+    "little":  { "pitch_std": 18.0, "rms": 0.032, "zcr": 0.070, "f1": 500.0, "f2": 1900.0 },
+    "fox":     { "pitch_std": 20.0, "rms": 0.035, "zcr": 0.090, "f1": 550.0, "f2": 1750.0 },
+    "woke":    { "pitch_std": 17.0, "rms": 0.033, "zcr": 0.060, "f1": 480.0, "f2": 1500.0 },
+    "up":      { "pitch_std": 15.0, "rms": 0.030, "zcr": 0.075, "f1": 600.0, "f2": 1400.0 },
+    "early":   { "pitch_std": 19.0, "rms": 0.031, "zcr": 0.065, "f1": 430.0, "f2": 2100.0 },
+    "in":      { "pitch_std": 14.0, "rms": 0.028, "zcr": 0.070, "f1": 400.0, "f2": 1900.0 },
+    "morning": { "pitch_std": 18.0, "rms": 0.032, "zcr": 0.060, "f1": 470.0, "f2": 1650.0 },
+    "brave":   { "pitch_std": 19.0, "rms": 0.034, "zcr": 0.075, "f1": 620.0, "f2": 1800.0 },
+    "rabbit":  { "pitch_std": 20.0, "rms": 0.033, "zcr": 0.080, "f1": 500.0, "f2": 1750.0 },
+    "hopped":  { "pitch_std": 18.0, "rms": 0.034, "zcr": 0.070, "f1": 560.0, "f2": 1500.0 },
+    "meadow":  { "pitch_std": 19.0, "rms": 0.031, "zcr": 0.065, "f1": 520.0, "f2": 1900.0 }
+  },
+  "ur": {
+    "چھوٹا":  { "pitch_std": 18.0, "rms": 0.032, "zcr": 0.070, "f1": 520.0, "f2": 1800.0 },
+    "لومڑ":   { "pitch_std": 20.0, "rms": 0.033, "zcr": 0.075, "f1": 540.0, "f2": 1700.0 },
+    "صبح":    { "pitch_std": 17.0, "rms": 0.030, "zcr": 0.065, "f1": 500.0, "f2": 1750.0 },
+    "بہادر":  { "pitch_std": 19.0, "rms": 0.033, "zcr": 0.070, "f1": 530.0, "f2": 1800.0 },
+    "پہاڑی":  { "pitch_std": 19.0, "rms": 0.032, "zcr": 0.068, "f1": 510.0, "f2": 1850.0 },
+    "ستارے":  { "pitch_std": 20.0, "rms": 0.031, "zcr": 0.072, "f1": 525.0, "f2": 1900.0 }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "stories": [
+    {
+      "id": "story_forest_01",
+      "title": "The Brave Little Fox",
+      "title_ur": "بہادر چھوٹا لومڑ",
+      "emoji": "🦊",
+      "color": "green",
+      "comprehension_en": "What animal was the story about?",
+      "comprehension_ur": "کہانی کس جانور کے بارے میں تھی؟",
+      "checkpoints": [
+        { "id": "cp_1", "text_en": "The little fox woke up early in the morning.", "text_ur": "چھوٹا لومڑ صبح جلدی اٹھا۔" },
+        { "id": "cp_2", "text_en": "He wanted to find the biggest apple tree.", "text_ur": "وہ سب سے بڑا سیب کا درخت تلاش کرنا چاہتا تھا۔" },
+        { "id": "cp_3", "text_en": "The brave fox crossed the cold mountain stream.", "text_ur": "بہادر لومڑ نے ٹھنڈا پہاڑی چشمہ پار کیا۔" },
+        { "id": "cp_4", "text_en": "A friendly squirrel showed him the way home.", "text_ur": "ایک دوست گلہری نے اسے گھر کا راستہ دکھایا۔" },
+        { "id": "cp_5", "text_en": "The little fox slept happily under the stars.", "text_ur": "چھوٹے لومڑ نے ستاروں کے نیچے خوشی سے آنکھیں بند کیں۔" }
+      ]
+    },
+    {
+      "id": "story_space_02",
+      "title": "The Little Rocket",
+      "title_ur": "چھوٹا راکٹ",
+      "emoji": "🚀",
+      "color": "purple",
+      "comprehension_en": "Where did the rocket travel to?",
+      "comprehension_ur": "راکٹ کہاں گیا تھا؟",
+      "checkpoints": [
+        { "id": "cp_1", "text_en": "The little rocket counted down from ten.", "text_ur": "چھوٹے راکٹ نے دس سے گنتی شروع کی۔" },
+        { "id": "cp_2", "text_en": "Silver clouds rushed past the small window.", "text_ur": "چاندی کے بادل چھوٹی کھڑکی کے پاس سے گزرے۔" },
+        { "id": "cp_3", "text_en": "The moon waved hello from far away.", "text_ur": "چاند نے دور سے ہاتھ ہلا کر سلام کیا۔" },
+        { "id": "cp_4", "text_en": "Stars danced around the brave little ship.", "text_ur": "ستارے بہادر چھوٹے جہاز کے گرد ناچے۔" },
+        { "id": "cp_5", "text_en": "The rocket came home before breakfast time.", "text_ur": "راکٹ ناشتے سے پہلے گھر واپس آیا۔" }
+      ]
+    },
+    {
+      "id": "story_ocean_03",
+      "title": "The Singing Whale",
+      "title_ur": "گانے والی وہیل",
+      "emoji": "🐳",
+      "color": "blue",
+      "comprehension_en": "What did the whale love to do?",
+      "comprehension_ur": "وہیل کو کیا کرنا پسند تھا؟",
+      "checkpoints": [
+        { "id": "cp_1", "text_en": "The blue whale loved to sing all day.", "text_ur": "نیلی وہیل کو سارا دن گانا گانا پسند تھا۔" },
+        { "id": "cp_2", "text_en": "Tiny fish gathered to hear the big song.", "text_ur": "ننھی مچھلیاں بڑا گانا سننے کو جمع ہوئیں۔" },
+        { "id": "cp_3", "text_en": "The whale sang louder than the storm.", "text_ur": "وہیل طوفان سے بھی زور سے گاتی تھی۔" },
+        { "id": "cp_4", "text_en": "Coral castles glowed under the deep water.", "text_ur": "گہرے پانی کے نیچے مرجانی محل چمکے۔" },
+        { "id": "cp_5", "text_en": "Every night the ocean hummed along with her.", "text_ur": "ہر رات سمندر اس کے ساتھ گنگناتا رہا۔" }
+      ]
+    }
+  ]
+}

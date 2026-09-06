@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+google-generativeai
+librosa
+webrtcvad
+openai-whisper
+numpy
+requests
+faster-whisper
+python-multipart
+python-dotenv

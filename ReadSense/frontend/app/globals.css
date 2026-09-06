@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --bg-base: #FAF7F2;
+  --bg-card: #FFFFFF;
+
+  --accent-primary: #C9BFF0;
+  --accent-primary-dark: #A89EDB;
+  --accent-primary-bg: #F0EDFC;
+
+  --accent-secondary: #F5C6D8;
+  --accent-secondary-bg: #FDF0F5;
+
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+
+  --status-complete: #22C55E;
+  --status-inprogress: #A89EDB;
+  --status-pending: #D1D5DB;
+  --status-good: #22C55E;
+  --status-needs: #F87171;
+  --status-anxious: #FB923C;
+
+  --border-color: #1A1A1A;
+}
+
+@theme inline {
+  --color-bg-base: var(--bg-base);
+  --color-bg-card: var(--bg-card);
+  
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-dark: var(--accent-primary-dark);
+  --color-accent-primary-bg: var(--accent-primary-bg);
+  
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-secondary-bg: var(--accent-secondary-bg);
+  
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  
+  --color-status-complete: var(--status-complete);
+  --color-status-inprogress: var(--status-inprogress);
+  --color-status-pending: var(--status-pending);
+  --color-status-good: var(--status-good);
+  --color-status-needs: var(--status-needs);
+  --color-status-anxious: var(--status-anxious);
+  
+  --color-border-dark: var(--border-color);
+
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Global utility classes for cards to match design perfectly */
+.speakflow-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.speakflow-card-sm {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Custom Scrollbar for inner lists */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ── v2: Urdu rendering (roadmap UI Prompt 5) ────────────────────────────── */
+/* Applied ONLY to Urdu target text / transcript blocks — app chrome stays LTR. */
+.font-urdu {
+  font-family: var(--font-noto-urdu), serif;
+  line-height: 2.2;
+}
+
+/* ── v2: Phase-2 feedback entrance (roadmap Phase 4: animate in, ~300ms) ── */
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up-fade 0.3s ease-out both;
+}
