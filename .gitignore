@@ -164,3 +164,12 @@ Audios/
 .agent/
 test_suite.db
 _backend.log
+
+# ------------------------------------------------------------------------------
+# 8. Local working docs & reference folders (never commit)
+# ------------------------------------------------------------------------------
+/HANDOFF.md
+/readme-craftsman/
+/github/
+/story-mode/
+/Logo.png

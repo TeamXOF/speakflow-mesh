@@ -32,6 +32,21 @@ and gives teachers a diagnostic control room.
 
 ## 🎯 Why SpeakFlow exists
 
+### The classroom problem
+
+A grade-3 teacher has **30 students and maybe 10 minutes of one-on-one time per day**. There is
+no way to listen to every child read individually, hear exactly *which* sounds they get wrong,
+write parent updates, and still teach the class. So struggling readers stay invisible — until
+they are years behind.
+
+**SpeakFlow is the teacher's ears at scale.** Every child reads aloud to the app at the same
+time; SpeakFlow listens to each one individually — word by word, letter by letter, sound by
+sound — gives the child instant coaching and stars, and hands the teacher a class-wide
+diagnostic: which student is struggling, on exactly which sounds, this week versus last week.
+One teacher. Every child. Every day.
+
+### Why most reading apps get it wrong
+
 When a child reads aloud, most apps only check *which words the transcript contains*. That quietly
 hides real problems: speech recognizers "autocorrect" grammar (`jump` → `jumped`), skipped word
 endings disappear, and inserted words are ignored — so a struggling reader can score 100%.
@@ -212,13 +227,13 @@ Gemini Flash-Lite agents & coaching → SQLite persistence → teacher analytics
 
 ```bash
 # 1 — Backend
-cd ReadSense/backend
+cd backend
 pip install -r requirements.txt
 cp .env.example .env          # add GROQ_API_KEY and GOOGLE_API_KEYS
 python -m uvicorn main:app --port 8000
 
 # 2 — Frontend (new terminal)
-cd ReadSense/frontend
+cd frontend
 npm install
 npm run build && npm start    # http://localhost:3000
 
@@ -238,7 +253,6 @@ npm run build && npm start    # http://localhost:3000
 ## 📁 Project Structure
 
 ```
-ReadSense/
 ├── backend/
 │   ├── main.py                  # FastAPI app, CORS, error envelope, LAN flag
 │   ├── routers/                 # auth · v1 (two-phase) · teacher · classic pipeline
@@ -254,6 +268,13 @@ ReadSense/
     ├── context/                 # Gen-1 + Story Mode session state
     └── lib/                     # typed API client · TTS · preferences
 ```
+<details><summary>Legacy & reference material</summary>
+
+`docx/` (early test scripts), `HACKATHON_QA_DEFENSE.*`, `KAGGLE_WRITEUP.md`, flowchart assets and
+`start_speakflow.bat` are kept for provenance. `Context/` holds the original product spec and
+`assets/` the design guide, logo and screenshots.
+
+</details>
 
 ---
 
