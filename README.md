@@ -6,7 +6,7 @@
 
 **Listen to how a child reads. Understand why they struggle. Practice, every day.**
 
-An AI-powered reading-fluency platform for young learners — bilingual in **English & Urdu** —
+An AI-powered reading-fluency platform for young learners, bilingual in **English & Urdu**,
 that evaluates real speech acoustically (not just transcription), coaches children word-by-word,
 and gives teachers a diagnostic control room.
 
@@ -36,12 +36,12 @@ and gives teachers a diagnostic control room.
 
 A grade-3 teacher has **30 students and maybe 10 minutes of one-on-one time per day**. There is
 no way to listen to every child read individually, hear exactly *which* sounds they get wrong,
-write parent updates, and still teach the class. So struggling readers stay invisible — until
+write parent updates, and still teach the class. So struggling readers stay invisible until
 they are years behind.
 
 **SpeakFlow is the teacher's ears at scale.** Every child reads aloud to the app at the same
-time; SpeakFlow listens to each one individually — word by word, letter by letter, sound by
-sound — gives the child instant coaching and stars, and hands the teacher a class-wide
+time; SpeakFlow listens to each one individually, word by word, letter by letter, sound by
+sound, gives the child instant coaching and stars, and hands the teacher a class-wide
 diagnostic: which student is struggling, on exactly which sounds, this week versus last week.
 One teacher. Every child. Every day.
 
@@ -49,7 +49,7 @@ One teacher. Every child. Every day.
 
 When a child reads aloud, most apps only check *which words the transcript contains*. That quietly
 hides real problems: speech recognizers "autocorrect" grammar (`jump` → `jumped`), skipped word
-endings disappear, and inserted words are ignored — so a struggling reader can score 100%.
+endings disappear, and inserted words are ignored, so a struggling reader can score 100%.
 
 SpeakFlow is built around **honest measurement**:
 
@@ -59,9 +59,9 @@ SpeakFlow is built around **honest measurement**:
 - **Literal decoding.** Both STT paths (Groq Whisper online / faster-whisper offline) are
   conditioned for verbatim dictation of a child, with temperature 0 and greedy decoding.
 - **Morphology-aware scoring.** Saying *sleep* for *sleeping* is reported as `missing -ing`,
-  saying *jump* for *jumped* as `missing -ed` — real errors with real names, never silently passed.
+  saying *jump* for *jumped* as `missing -ed`. Real errors with real names, never silently passed.
 - **Inserted words are penalized.** Saying "Jesus" in the middle of a sentence shows up red as
-  *not in the sentence* and counts against accuracy — in both engines.
+  *not in the sentence* and counts against accuracy, in both engines.
 - **Everything a child says stays local.** Recordings are analyzed in-request and deleted
   immediately; only scores and per-word results are stored.
 
@@ -78,31 +78,31 @@ engine that tracks what is *improving* and what has been *conquered*, and full
 <tr>
 <td width="50%" align="center">
   <img src="assets/screenshots/02-reading-dashboard.png" alt="Reading Session Dashboard" />
-  <br><i><sub><b>Reading Session Dashboard</b> — live acoustic analysis with a fresh AI-generated sentence every session, word-level coloring and five AI agents.</sub></i>
+  <br><i><sub><b>Reading Session Dashboard</b>: live acoustic analysis with a fresh AI-generated sentence every session, word-level coloring and five AI agents.</sub></i>
 </td>
 <td width="50%" align="center">
   <img src="assets/screenshots/06-teacher-hub.png" alt="Teacher Hub" />
-  <br><i><sub><b>Teacher Hub</b> — class accuracy trends, struggling-sound rankings (English & Urdu) and per-checkpoint progress across every story.</sub></i>
+  <br><i><sub><b>Teacher Hub</b>: class accuracy trends, struggling-sound rankings (English & Urdu) and per-checkpoint progress across every story.</sub></i>
 </td>
 </tr>
 <tr>
 <td width="50%" align="center">
   <img src="assets/screenshots/07-story-mode-map.png" alt="Story Mode map" />
-  <br><i><sub><b>Story Mode</b> — endless dual-track level map (English / اردو): themed worlds, boss levels, star ratings and unlock progression that never caps.</sub></i>
+  <br><i><sub><b>Story Mode</b>: an endless dual-track level map (English / اردو): themed worlds, boss levels, star ratings and unlock progression that never caps.</sub></i>
 </td>
 <td width="50%" align="center">
   <img src="assets/screenshots/04-my-progress.png" alt="My Progress" />
-  <br><i><sub><b>My Progress</b> — merges classic-engine reads and story checkpoints into one trend, with struggling words and the sound patterns behind them.</sub></i>
+  <br><i><sub><b>My Progress</b>: merges classic-engine reads and story checkpoints into one trend, with struggling words and the sound patterns behind them.</sub></i>
 </td>
 </tr>
 <tr>
 <td width="50%" align="center">
   <img src="assets/screenshots/05-practice-center.png" border="0" alt="Practice Center" />
-  <br><i><sub><b>Practice Center</b> — exercises generated from the student's own real errors, with improving / new / conquered trends. No generic drills.</sub></i>
+  <br><i><sub><b>Practice Center</b>: exercises generated from the student's own real errors, with improving / new / conquered trends. No generic drills.</sub></i>
 </td>
 <td width="50%" align="center">
   <img src="assets/screenshots/01-login.png" alt="Login" />
-  <br><i><sub><b>Role-based sign in</b> — students self-register and are approved by their teacher; every route is role-guarded server-side.</sub></i>
+  <br><i><sub><b>Role-based sign in</b>: students self-register and are approved by their teacher; every route is role-guarded server-side.</sub></i>
 </td>
 </tr>
 </table>
@@ -111,30 +111,49 @@ engine that tracks what is *improving* and what has been *conquered*, and full
 
 ## ✨ Feature Pillars
 
-### 🎙️ Two complete reading engines — one honest scorer
+### 🎙️ Two complete reading engines, one honest scorer
 
 - **Reading Session Dashboard (classic engine):** a fresh AI-generated warm-up sentence every
   session (Easy / Medium / Hard), live waveform capture, Groq Whisper with automatic offline
   fallback to local Whisper, real telemetry (WPM, long pauses, duration), and five Gemini
-  Flash-Lite agents — Phonetic Analyst, Difficulty Assessor, Engagement Tracker, Practice
+  Flash-Lite agents: Phonetic Analyst, Difficulty Assessor, Engagement Tracker, Practice
   Generator, Progress Synthesizer.
 - **Story Mode (two-phase engine):** an endless, dual-track adventure. Levels are generated
-  on demand by Gemini (themed worlds — Enchanted Forest, Ocean Cove, Space Station… — with an
-  aye-difficulty ramp and a boss tongue-twister every fifth level), cached so every student
+  on demand by Gemini (themed worlds like Enchanted Forest, Ocean Cove and Space Station,
+  with an and a boss tongue-twister every fifth level), cached so every student
   plays the same level N, and tracked per language with a real star economy (3★ ≥95, 2★ ≥80,
-  1★ ≥70). Level N+1 unlocks when N is passed — the map never caps.
+  1★ ≥70). Level N+1 unlocks when N is passed, so the map never caps.
 - **Letter-by-letter inspector:** tap any word to see a Target vs You-Said character diff
   (adapted from our story-mode reference design), hear the word, and get a coach tip.
 - **The same measurement core:** word alignment + morphology detection (`missing -ed`,
   `added -ing`), extra-word penalties, Whisper word confidence, and per-word acoustic features.
   What is green in one engine means exactly the same in the other.
 
-### 🗣️ Truly bilingual — English & اردو
+### 🤖 Five agents, one diagnosis
+
+The classic engine is not one model guessing a score. Every recording is dispatched to
+**five Gemini Flash-Lite agents that run in parallel**, each with its own expert role, and their
+combined JSON verdict is what lands on the dashboards:
+
+| Agent | What it figures out | Feeds |
+|---|---|---|
+| 🗣️ **Phonetic Analyst** | Exactly which sound patterns and words caused trouble (`dr blend`, `past-tense ed`), with the transcript words that prove it | Word highlighting, Sounds to Practice, practice targeting |
+| 📚 **Difficulty Assessor** | Whether the sentence was too easy or too hard for this reader's grade, and the primary issue | Primary Issue card, difficulty adaptation |
+| 💓 **Engagement Tracker** | The child's state while reading (calm, hesitant, frustrated) from pitch variance and pauses | Emotional State, coaching tone |
+| 🎯 **Practice Generator** | Five custom sentences that adapt: strong reads earn hard mastery tongue-twisters, shaky reads get short wins on flagged words | Targeted Practice |
+| 📈 **Progress Synthesizer** | The multi-session trend line (improving, stable, needs attention) | Progress notes for the teacher |
+
+Phase 1 runs agents 1-3 in parallel, then 4 and 5 fan out with the combined diagnosis; the whole
+verdict lands in seconds on the free tier. You can watch every agent light up live in the
+**Pipeline Monitor**, complete with per-stage latencies, and swap the model (Flash-Lite / Gemma)
+or the STT engine from Settings without touching code.
+
+### 🗣️ Truly bilingual: English & اردو
 
 - One **EN | اردو** switch drives everything: sentence generation, STT language, phoneme
   confusion tables (ق/ک، د/ڈ، ص/س…), agent output language, RTL Nastaliq rendering and the
   device's Urdu TTS voice.
-- Urdu feedback, practice sentences and encouragement notes are generated in natural Urdu —
+- Urdu feedback, practice sentences and encouragement notes are generated in natural Urdu,
   verified live end to end.
 - Word tips explain Urdu-letter mix-ups in Urdu ("د vs ڈ").
 
@@ -154,7 +173,7 @@ engine that tracks what is *improving* and what has been *conquered*, and full
 - Live roster with per-student accuracy, checkpoints, stars and last activity; drill into any
   student for trends, struggling words and an auto-generated Urdu **parent update**.
 - Reports export, checkpoint-level class overview, account approvals, and **live API-key
-  management** (keys are editable at runtime — no restart).
+  management** (keys are editable at runtime, no restart).
 
 ### 🌐 Offline-first & classroom-ready
 
@@ -208,7 +227,7 @@ Gemini Flash-Lite agents & coaching → SQLite persistence → teacher analytics
 
 | Layer | Technology | Why |
 |---|---|---|
-| Frontend | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 | Fast, typed, zero component-lib dependency — custom kid-friendly design system |
+| Frontend | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 | Fast, typed, zero component-lib dependency, custom kid-friendly design system |
 | Charts | Recharts | Progress trends for students and teachers |
 | Backend | FastAPI (Python), WebSockets | Two-phase analysis with async push |
 | STT | Groq Whisper large-v3 → faster-whisper (INT8) | ~1s cloud accuracy, graceful offline fallback |
@@ -226,18 +245,18 @@ Gemini Flash-Lite agents & coaching → SQLite persistence → teacher analytics
 (audio decoding).
 
 ```bash
-# 1 — Backend
+# 1, Backend
 cd backend
 pip install -r requirements.txt
 cp .env.example .env          # add GROQ_API_KEY and GOOGLE_API_KEYS
 python -m uvicorn main:app --port 8000
 
-# 2 — Frontend (new terminal)
+# 2, Frontend (new terminal)
 cd frontend
 npm install
 npm run build && npm start    # http://localhost:3000
 
-# 3 — Sign in
+# 3, Sign in
 #    Teacher:  teacher / speakflow123
 #    Students: sign up → teacher approves (Settings → Student Accounts)
 ```
@@ -245,7 +264,7 @@ npm run build && npm start    # http://localhost:3000
 > **Classroom / LAN mode:** start the backend with `python main.py --local-host` and open
 > `http://<teacher-laptop-ip>:3000` from any tablet on the same network.
 
-> **Urdu:** flip the **EN | اردو** switch in the top bar — sentences, STT, feedback, practice
+> **Urdu:** flip the **EN | اردو** switch in the top bar, sentences, STT, feedback, practice
 > and TTS all switch with you.
 
 ---
@@ -300,7 +319,7 @@ npm run build && npm start    # http://localhost:3000
 1. Fork → create a branch: `feature/my-feature` or `fix/my-fix`
 2. Keep commits [Conventional](https://www.conventionalcommits.org): `feat(story-mode): …`
 3. Run the backend suites before pushing: `python test_v2_pipeline.py && python _auth_test.py`
-4. Open a PR against `main` — screenshots for UI changes are appreciated.
+4. Open a PR against `main`, screenshots for UI changes are appreciated.
 
 ## 📄 License
 
@@ -309,5 +328,5 @@ Released under the [MIT License](LICENSE).
 ---
 
 <div align="center">
-<sub>Built with ❤️ for young readers — <b>TeamXOF</b> · Waleed Khalid</sub>
+<sub>Built with ❤️ for young readers, <b>TeamXOF</b> · Waleed Khalid</sub>
 </div>
