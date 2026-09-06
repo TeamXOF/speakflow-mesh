@@ -53,17 +53,14 @@ endings disappear, and inserted words are ignored, so a struggling reader can sc
 
 SpeakFlow is built around **honest measurement**:
 
-- **Acoustic evidence, not just strings.** Librosa extracts pitch stability, energy, ZCR and LPC
-  formants (F1/F2) for every spoken word, aligned against the printed sentence with a
-  composite confidence + acoustics score.
-- **Literal decoding.** Both STT paths (Groq Whisper online / faster-whisper offline) are
-  conditioned for verbatim dictation of a child, with temperature 0 and greedy decoding.
-- **Morphology-aware scoring.** Saying *sleep* for *sleeping* is reported as `missing -ing`,
-  saying *jump* for *jumped* as `missing -ed`. Real errors with real names, never silently passed.
-- **Inserted words are penalized.** Saying "Jesus" in the middle of a sentence shows up red as
-  *not in the sentence* and counts against accuracy, in both engines.
+- **Acoustic + alignment scoring.** Every spoken word is scored against the printed sentence
+  using real audio evidence (pitch, energy, formants), not just transcript strings.
+- **Morphology-aware.** Saying *sleep* for *sleeping* is reported as `missing -ing`, not passed
+  off as correct.
+- **Nothing slips through.** Skipped words, inserted words and low-confidence reads are all
+  flagged, in both engines.
 - **Everything a child says stays local.** Recordings are analyzed in-request and deleted
-  immediately; only scores and per-word results are stored.
+  immediately; only scores are stored.
 
 The result is a platform a teacher can trust: two complete reading experiences (a live
 **multi-agent analysis dashboard** and a gamified **Story Mode**), a personalized practice
