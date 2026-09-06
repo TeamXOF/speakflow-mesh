@@ -30,6 +30,7 @@ from routers import pipeline, students, sessions
 from routers.auth import router as auth_router
 from routers.teacher import router as teacher_router
 from routers.v1 import api as v1_api, ws_router, ws_manager, ApiError
+from routers.story_mode import router as story_mode_router
 
 # Ensure .env is loaded if available
 try:
@@ -70,6 +71,7 @@ app.include_router(sessions.router)
 app.include_router(auth_router)
 app.include_router(teacher_router)
 app.include_router(v1_api)
+app.include_router(story_mode_router)
 app.include_router(ws_router)
 
 

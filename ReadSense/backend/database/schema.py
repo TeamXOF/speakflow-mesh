@@ -167,6 +167,52 @@ def init_db():
         except sqlite3.OperationalError:
             pass  # column already exists
 
+        # ── Dynamic Story Mode (endless dual-track levels) ──────────────────
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS story_levels (
+            track TEXT NOT NULL,
+            level INTEGER NOT NULL,
+            sentence TEXT NOT NULL,
+            theme TEXT,
+            difficulty TEXT,
+            created_at TEXT DEFAULT (datetime('now')),
+            PRIMARY KEY (track, level)
+        )
+        ''')
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS story_progress (
+            student_id TEXT NOT NULL,
+            track TEXT NOT NULL,
+            level INTEGER NOT NULL,
+            best_accuracy INTEGER DEFAULT 0,
+            stars INTEGER DEFAULT 0,
+            attempts INTEGER DEFAULT 0,
+            passed INTEGER DEFAULT 0,
+            updated_at TEXT DEFAULT (datetime('now')),
+            PRIMARY KEY (student_id, track, level)
+        )
+        ''')
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS story_attempts (
+            id TEXT PRIMARY KEY,
+            student_id TEXT,
+            track TEXT,
+            level INTEGER,
+            accuracy INTEGER,
+            stars INTEGER,
+            passed INTEGER,
+            result_json TEXT,
+            created_at TEXT DEFAULT (datetime('now'))
+        )
+        ''')
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS story_phase2 (
+            attempt_id TEXT PRIMARY KEY,
+            payload_json TEXT,
+            created_at TEXT DEFAULT (datetime('now'))
+        )
+        ''')
+
         # Reading language of classic-engine sessions ("en" | "ur") — added
         # when Urdu support landed so progress tracking can tell them apart
         try:
