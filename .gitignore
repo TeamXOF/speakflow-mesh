@@ -178,3 +178,6 @@ _backend.log
 # 9. bin/ — retired files kept out of the repository
 # ------------------------------------------------------------------------------
 /bin/
+
+# Flick animation workspaces (build artifacts + node_modules)
+/flick-output/
