@@ -88,18 +88,38 @@ engine that tracks what is *improving* and what has been *conquered*, and full
   <br><i><sub><b>Story Mode</b>: an endless dual-track level map (English / اردو): themed worlds, boss levels, star ratings and unlock progression that never caps.</sub></i>
 </td>
 <td width="50%" align="center">
-  <img src="assets/screenshots/04-my-progress.png" alt="My Progress" />
-  <br><i><sub><b>My Progress</b>: merges classic-engine reads and story checkpoints into one trend, with struggling words and the sound patterns behind them.</sub></i>
+  <img src="assets/screenshots/09-story-play.png" alt="Story Mode play" />
+  <br><i><sub><b>Level player</b>: hear the sentence, record, and get a star rating, word-level verdicts and a letter-by-letter inspector.</sub></i>
 </td>
 </tr>
 <tr>
 <td width="50%" align="center">
-  <img src="assets/screenshots/05-practice-center.png" border="0" alt="Practice Center" />
-  <br><i><sub><b>Practice Center</b>: exercises generated from the student's own real errors, with improving / new / conquered trends. No generic drills.</sub></i>
+  <img src="assets/screenshots/04-my-progress.png" alt="My Progress" />
+  <br><i><sub><b>My Progress</b>: merges classic-engine reads and story checkpoints into one trend, with struggling words and the sound patterns behind them.</sub></i>
 </td>
 <td width="50%" align="center">
-  <img src="assets/screenshots/01-login.png" alt="Login" />
-  <br><i><sub><b>Role-based sign in</b>: students self-register and are approved by their teacher; every route is role-guarded server-side.</sub></i>
+  <img src="assets/screenshots/05-practice-center.png" alt="Practice Center" />
+  <br><i><sub><b>Practice Center</b>: exercises generated from the student's own real errors, with improving / new / conquered trends. No generic drills.</sub></i>
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+  <img src="assets/screenshots/10-pipeline-monitor.png" alt="Pipeline Monitor" />
+  <br><i><sub><b>Pipeline Monitor</b>: watch the five agents and every processing stage live, with Groq / Gemini reachability at a glance.</sub></i>
+</td>
+<td width="50%" align="center">
+  <img src="assets/screenshots/13-parent-update.png" alt="Parent Update" />
+  <br><i><sub><b>Parent updates</b>: an auto-generated WhatsApp-style message in Urdu or English, built from real session data and previewed per student.</sub></i>
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+  <img src="assets/screenshots/12-students.png" alt="Students roster" />
+  <br><i><sub><b>Live roster</b>: per-student checkpoints, accuracy, stars, account status and parent-update preferences at a glance.</sub></i>
+</td>
+<td width="50%" align="center">
+  <img src="assets/screenshots/11-reports.png" alt="Reports" />
+  <br><i><sub><b>Progress reports</b>: real per-student summaries with download and print, generated from actual session data.</sub></i>
 </td>
 </tr>
 </table>
@@ -171,6 +191,9 @@ or the STT engine from Settings without touching code.
   student for trends, struggling words and an auto-generated Urdu **parent update**.
 - Reports export, checkpoint-level class overview, account approvals, and **live API-key
   management** (keys are editable at runtime, no restart).
+- **WhatsApp-style parent updates**: an auto-generated message per student, written in Urdu or
+  English from real session data ("91% this week, 49 stars"), previewed on the student page
+  with an auto-update toggle. Nothing is sent without the teacher.
 
 ### 🌐 Offline-first & classroom-ready
 
@@ -325,5 +348,5 @@ Released under the [MIT License](LICENSE).
 ---
 
 <div align="center">
-<sub>Built with ❤️ for young readers, <b>TeamXOF</b> · Waleed Khalid</sub>
+<sub>Built with ❤️ for young readers by <b>TeamXOF</b> · Waleed Khalid · Muhammad Ali · Muhammad Nafees</sub>
 </div>
