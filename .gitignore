@@ -181,3 +181,6 @@ _backend.log
 
 # Flick animation workspaces (build artifacts + node_modules)
 /flick-output/
+
+# First-run marker created by start_speakflow.bat
+backend/.deps_installed
