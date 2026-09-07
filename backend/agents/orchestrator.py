@@ -16,7 +16,13 @@ from .progress_agent import PROGRESS_SYSTEM_PROMPT
 api_keys_str = os.getenv("GOOGLE_API_KEYS", os.getenv("GOOGLE_API_KEY", ""))
 API_KEYS = [k.strip() for k in api_keys_str.split(",") if k.strip()]
 if not API_KEYS:
-    raise ValueError("No API keys found. Please set GOOGLE_API_KEYS in .env")
+    raise ValueError(
+        "No API keys found. Create a file called .env inside the backend folder "
+        "(copy backend/.env.example as a template) and add your keys:\n"
+        "  GOOGLE_API_KEYS=your-google-ai-studio-key(s), comma separated\n"
+        "  GROQ_API_KEY=your-groq-key (for online speech-to-text)\n"
+        "Then restart the app."
+    )
 
 current_key_idx = 0
 key_lock = asyncio.Lock()
