@@ -20,3 +20,10 @@ def verify_password(password: str, stored: str) -> bool:
 
 def new_token() -> str:
     return secrets.token_urlsafe(32)
+
+
+ACCESS_TOKEN_EXPIRE_SECONDS = 15 * 60  # 15 minutes
+REFRESH_TOKEN_EXPIRE_SECONDS = 7 * 24 * 60 * 60  # 7 days
+COOKIE_ACCESS_NAME = "access_token"
+COOKIE_REFRESH_NAME = "refresh_token"
+

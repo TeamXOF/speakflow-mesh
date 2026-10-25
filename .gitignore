@@ -60,6 +60,7 @@ eggs/
 .eggs/
 lib/
 lib64/
+!frontend/lib/
 parts/
 sdist/
 var/
@@ -159,9 +160,12 @@ $RECYCLE.BIN/
 *.exe
 *.mp4
 *.crdownload
+*.zip
+cookies.txt
 Audios/
 .db_backup/
 .agent/
+.agents/
 test_suite.db
 _backend.log
 

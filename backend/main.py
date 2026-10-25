@@ -1,24 +1,27 @@
-import os
+import shutil
 
-# ── Inject ffmpeg into PATH so Whisper can decode audio ───────────────────────
-# winget installs to a user-local path that isn't in the inherited PATH
-# when the process is launched programmatically.
-_FFMPEG_CANDIDATES = [
-    # winget default install location (Gyan build)
-    r"C:\Users\Ace\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.2-full_build\bin",
-    # Also check standard Program Files locations
-    r"C:\Program Files\ffmpeg\bin",
-    r"C:\ffmpeg\bin",
-]
-for _ffmpeg_bin in _FFMPEG_CANDIDATES:
-    if os.path.isfile(os.path.join(_ffmpeg_bin, "ffmpeg.exe")):
-        os.environ["PATH"] = _ffmpeg_bin + os.pathsep + os.environ.get("PATH", "")
-        print(f"[STARTUP] ffmpeg found and added to PATH: {_ffmpeg_bin}")
-        break
+if shutil.which("ffmpeg"):
+    pass
 else:
-    print("[STARTUP WARNING] ffmpeg not found in known locations. Audio processing may fail.")
+    # ── Inject ffmpeg into PATH so Whisper can decode audio ───────────────────────
+    # winget installs to a user-local path that isn't in the inherited PATH
+    # when the process is launched programmatically.
+    _FFMPEG_CANDIDATES = [
+        # winget default install location (Gyan build)
+        r"C:\Users\Ace\AppData\Local\Microsoft\WinGet\Packages"
+        r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
+        r"\ffmpeg-8.1.2-full_build\bin",
+        # Also check standard Program Files locations
+        r"C:\Program Files\ffmpeg\bin",
+        r"C:\ffmpeg\bin",
+    ]
+    for _ffmpeg_bin in _FFMPEG_CANDIDATES:
+        if os.path.isfile(os.path.join(_ffmpeg_bin, "ffmpeg.exe")):
+            os.environ["PATH"] = _ffmpeg_bin + os.pathsep + os.environ.get("PATH", "")
+            print(f"[STARTUP] ffmpeg found and added to PATH: {_ffmpeg_bin}")
+            break
+    else:
+        print("[STARTUP WARNING] ffmpeg not found in known locations. Audio processing may fail.")
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse

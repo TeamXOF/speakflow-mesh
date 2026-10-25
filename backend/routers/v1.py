@@ -717,12 +717,12 @@ def student_dashboard(student_id: str, range: str = "all", request: Request = No
                 key = str(w).strip().lower().strip(".,!?;:")
                 if key:
                     classic_word_counts[key] = classic_word_counts.get(key, 0) + 1
-        for p in phon.get("struggling_phonemes") or []:
-            # the phonetic agent returns {"label", "words"} objects
-            label = p.get("label") if isinstance(p, dict) else str(p)
-            if not label:
-                continue
-            classic_phoneme_counts[label] = classic_phoneme_counts.get(label, 0) + 1
+            for p in phon.get("struggling_phonemes") or []:
+                # the phonetic agent returns {"label", "words"} objects
+                label = p.get("label") if isinstance(p, dict) else str(p)
+                if not label:
+                    continue
+                classic_phoneme_counts[label] = classic_phoneme_counts.get(label, 0) + 1
 
         recent = conn.execute(
             """

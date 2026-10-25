@@ -51,8 +51,9 @@ pending = [u for u in r.json() if u["status"] == "pending"]
 check("teacher lists pending", any(u["username"] == KID_USER for u in pending), f"{len(pending)} pending")
 kid_id = next(u["id"] for u in r.json() if u["username"] == KID_USER)
 
-# 6. Student token cannot access teacher endpoints
-r = client.get("/api/auth/users")
+# 6. Unauthenticated request cannot access teacher endpoints
+anon_client = TestClient(app)
+r = anon_client.get("/api/auth/users")
 check("unauthenticated users list blocked", r.status_code in (401, 403))
 
 # 7. Approve -> linked student row created
@@ -83,7 +84,7 @@ r = client.get("/api/v1/classroom/overview", headers=TH)
 check("teacher sees classroom overview", r.status_code == 200)
 
 # 12. Unauthenticated session creation blocked
-r = client.post("/api/v1/sessions", json={"student_id": "student-1", "story_id": "story_forest_01", "language": "en"})
+r = anon_client.post("/api/v1/sessions", json={"student_id": "student-1", "story_id": "story_forest_01", "language": "en"})
 check("unauthenticated session blocked", r.status_code == 401)
 
 # 13. Reject flow
@@ -93,5 +94,35 @@ kid2 = next(u["id"] for u in r.json() if u["username"] == KID2_USER)
 r = client.post(f"/api/auth/users/{kid2}/reject", headers=TH)
 r = client.post("/api/auth/login", json={"username": KID2_USER, "password": "kid234"})
 check("rejected login blocked", r.status_code == 403 and "not approved" in r.json()["error"]["message"])
+
+# ── 14. Cookie & Refresh Token Tests ─────────────────────────────────────────
+cookie_client = TestClient(app)
+r = cookie_client.post("/api/auth/login", json={"username": "teacher", "password": "speakflow123"})
+check("login sets access and refresh cookies",
+      "access_token" in cookie_client.cookies and "refresh_token" in cookie_client.cookies and "access_token" in r.json() and "refresh_token" in r.json())
+
+# Cookie-based authenticated endpoint without Authorization header
+r = cookie_client.get("/api/auth/me")
+check("cookie-based me endpoint succeeds", r.status_code == 200 and r.json()["user"]["role"] == "teacher")
+
+# Refresh token flow via cookie
+r = cookie_client.post("/api/auth/refresh")
+check("refresh via cookie succeeds", r.status_code == 200 and bool(r.json().get("access_token")))
+
+# Refresh token flow via JSON body
+refresh_token_val = cookie_client.cookies.get("refresh_token")
+r = anon_client.post("/api/auth/refresh", json={"refresh_token": refresh_token_val})
+check("refresh via JSON body succeeds", r.status_code == 200 and bool(r.json().get("access_token")))
+
+# Invalid refresh token fails
+r = anon_client.post("/api/auth/refresh", json={"refresh_token": "fake-invalid-token"})
+check("invalid refresh token returns 401", r.status_code == 401)
+
+# Logout clears cookies
+r = cookie_client.post("/api/auth/logout")
+check("logout endpoint returns ok", r.status_code == 200 and r.json().get("ok") is True)
+# Verify cookies were deleted / expired
+r = cookie_client.get("/api/auth/me")
+check("logged out client is unauthenticated", r.status_code == 401)
 
 print("AUTH TEST:", "PASSED" if ok else "FAILED")

@@ -26,6 +26,8 @@ The vector is extracted over the word's exact STT timespan using the SAME
 per-word feature pipeline the runtime uses (services/acoustic.py), so the
 numbers are directly comparable to what reference_distance() will see.
 """
+from __future__ import annotations
+from typing import Optional
 
 import os
 import sys
@@ -67,7 +69,7 @@ def score_file(path: str, target_text: str, language: str) -> list:
     return [acoustic.score_word(e, ac) for e in entries if e["target"]]
 
 
-def build_reference_vector(word: str, language: str) -> dict | None:
+def build_reference_vector(word: str, language: str) -> Optional[dict]:
     """Mean per-word feature vector for `word`, extracted over the word's exact
     STT timespan with the same feature pipeline the runtime scores with."""
     import numpy as np

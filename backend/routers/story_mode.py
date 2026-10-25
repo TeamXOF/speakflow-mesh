@@ -13,6 +13,9 @@ Design goals (roadmap: "not capped at 15 levels"):
 - Reuses the exact measurement core as the other engines (Groq→local STT,
   librosa acoustics, alignment + morphology scoring, Gemini feedback).
 """
+from __future__ import annotations
+from typing import Optional
+
 import os
 import json
 import time
@@ -179,7 +182,7 @@ def get_or_create_level(track: str, level: int) -> dict:
     return {"sentence": sentence, "theme": theme, "difficulty": difficulty}
 
 
-def _student_id_or_403(request: Request, wanted: str | None):
+def _student_id_or_403(request: Request, wanted: Optional[str]):
     user = get_current_user(request)
     if not user:
         raise ApiError("VALIDATION_ERROR", "Please log in.", 401)
@@ -214,7 +217,7 @@ def _unlocked_and_next(progress: list) -> tuple[int, int, int]:
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 @router.get("/map")
-def story_map(request: Request, world: int = 0, track: str = "en", student_id: str | None = None):
+def story_map(request: Request, world: int = 0, track: str = "en", student_id: Optional[str] = None):
     """Level map for one world: statuses, stars, unlocks. Auth: approved user
     (students always see their own progression)."""
     user = get_current_user(request)

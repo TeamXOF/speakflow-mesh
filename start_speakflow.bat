@@ -52,7 +52,7 @@ echo [OK] API keys found in backend\.env
 
 :: ── Step 2: backend dependencies ────────────────────────────────────────────
 if not exist "%ROOT%backend\.deps_installed" (
-    echo [SETUP] Installing backend dependencies (first run only)...
+    echo [SETUP] Installing backend dependencies ^(first run only^)...
     python -m pip install -r "%ROOT%backend\requirements.txt"
     if errorlevel 1 (
         echo [ERROR] pip install failed. Check your internet connection and try again.
@@ -64,7 +64,7 @@ echo [OK] Backend dependencies ready.
 
 :: ── Step 3: frontend dependencies + build ───────────────────────────────────
 if not exist "%ROOT%frontend\node_modules" (
-    echo [SETUP] Installing frontend packages (first run only, a few minutes)...
+    echo [SETUP] Installing frontend packages ^(first run only, a few minutes^)...
     cd /d "%ROOT%frontend" && call npm install
     if errorlevel 1 (
         echo [ERROR] npm install failed. Check your internet connection and try again.
@@ -72,7 +72,7 @@ if not exist "%ROOT%frontend\node_modules" (
     )
 )
 if not exist "%ROOT%frontend\.next\BUILD_ID" (
-    echo [SETUP] Building the frontend (first run only, a few minutes)...
+    echo [SETUP] Building the frontend ^(first run only, a few minutes^)...
     cd /d "%ROOT%frontend" && call npm run build
     if errorlevel 1 (
         echo [ERROR] Frontend build failed.
@@ -84,8 +84,11 @@ echo [OK] Frontend ready.
 :: ── Step 4: launch both servers ─────────────────────────────────────────────
 echo.
 echo Launching SpeakFlow AI...
-start "SpeakFlow Backend" cmd /k "cd /d %ROOT%backend && python -m uvicorn main:app --port 8000"
-start "SpeakFlow Frontend" cmd /k "cd /d %ROOT%frontend && npm start"
+cd /d "%ROOT%backend"
+start "SpeakFlow Backend" cmd /k "python -m uvicorn main:app --port 8000"
+cd /d "%ROOT%frontend"
+start "SpeakFlow Frontend" cmd /k "npm start"
+cd /d "%ROOT%"
 
 echo.
 echo Both servers are starting up!

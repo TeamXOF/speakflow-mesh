@@ -1,0 +1,16 @@
+[Unit]
+Description=SpeakFlow Next.js Frontend
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/speakflow/frontend
+ExecStart=/usr/bin/npm start -- -p 3000 -H 127.0.0.1
+Restart=always
+RestartSec=3
+Environment="NODE_ENV=production"
+Environment="PORT=3000"
+
+[Install]
+WantedBy=multi-user.target

@@ -30,7 +30,7 @@ init_db()  # TestClient without a context manager doesn't run startup events
 
 client = TestClient(app)
 
-PASS, FAIL = "✅", "❌"
+PASS, FAIL = "[PASS]", "[FAIL]"
 
 
 def check(label: str, cond: bool, extra: str = ""):

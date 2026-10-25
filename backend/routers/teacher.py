@@ -5,6 +5,9 @@ derived from actual errors, and runtime API-key management (persisted to .env).
 
 All routes require an approved teacher unless noted.
 """
+from __future__ import annotations
+from typing import Optional
+
 import os
 import json
 import uuid
@@ -30,7 +33,7 @@ _BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV_PATH = os.path.join(_BACKEND_DIR, ".env")
 
 
-def _teacher(request: Request) -> JSONResponse | None:
+def _teacher(request: Request) -> Optional[JSONResponse]:
     return require_teacher(get_current_user(request))
 
 

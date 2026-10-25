@@ -135,9 +135,21 @@ def init_db():
         CREATE TABLE IF NOT EXISTS auth_tokens (
             token TEXT PRIMARY KEY,
             user_id TEXT REFERENCES users(id),
+            token_type TEXT DEFAULT 'access',
+            expires_at TEXT,
             created_at TEXT DEFAULT (datetime('now'))
         )
         ''')
+
+        try:
+            cursor.execute("ALTER TABLE auth_tokens ADD COLUMN token_type TEXT DEFAULT 'access'")
+        except sqlite3.OperationalError:
+            pass
+
+        try:
+            cursor.execute("ALTER TABLE auth_tokens ADD COLUMN expires_at TEXT")
+        except sqlite3.OperationalError:
+            pass
 
         # Per-word pronunciation tips (tap-a-word feature). Cached: each word is
         # generated once, then served from here forever.

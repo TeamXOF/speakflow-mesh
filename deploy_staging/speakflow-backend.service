@@ -1,0 +1,15 @@
+[Unit]
+Description=SpeakFlow FastAPI Backend
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/speakflow/backend
+ExecStart=/home/ubuntu/speakflow/backend/venv/bin/uvicorn main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=3
+Environment="PATH=/home/ubuntu/speakflow/backend/venv/bin:/usr/local/bin:/usr/bin:/bin"
+
+[Install]
+WantedBy=multi-user.target

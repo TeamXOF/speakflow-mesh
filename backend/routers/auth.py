@@ -6,13 +6,20 @@ from the Settings page -> the account links to a roster entry so Story Mode
 sessions bind to the right student. Tokens are opaque random strings stored in
 SQLite (Authorization: Bearer <token>).
 """
+from __future__ import annotations
+from typing import Optional
+
 import uuid
 import logging
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse
 
-from core.security import hash_password, verify_password, new_token
+from core.security import (
+    hash_password, verify_password, new_token,
+    ACCESS_TOKEN_EXPIRE_SECONDS, REFRESH_TOKEN_EXPIRE_SECONDS,
+    COOKIE_ACCESS_NAME, COOKIE_REFRESH_NAME
+)
 from database.schema import get_db_connection
 
 log = logging.getLogger("speakflow.auth")
@@ -26,24 +33,55 @@ def _user_dict(row) -> dict:
     return d
 
 
-def get_current_user(request: Request) -> dict | None:
-    """Resolve the Bearer token to a user row, or None."""
+def set_auth_cookies(response: Response, access_token: str, refresh_token: Optional[str] = None):
+    response.set_cookie(
+        key=COOKIE_ACCESS_NAME,
+        value=access_token,
+        max_age=ACCESS_TOKEN_EXPIRE_SECONDS,
+        httponly=True,
+        samesite="lax",
+        path="/",
+        secure=False,
+    )
+    if refresh_token:
+        response.set_cookie(
+            key=COOKIE_REFRESH_NAME,
+            value=refresh_token,
+            max_age=REFRESH_TOKEN_EXPIRE_SECONDS,
+            httponly=True,
+            samesite="lax",
+            path="/",
+            secure=False,
+        )
+
+
+def clear_auth_cookies(response: Response):
+    response.delete_cookie(key=COOKIE_ACCESS_NAME, path="/")
+    response.delete_cookie(key=COOKIE_REFRESH_NAME, path="/")
+
+
+def get_current_user(request: Request) -> Optional[dict]:
+    """Resolve the Bearer token or access_token cookie to a user row, or None."""
+    token = None
     auth = request.headers.get("Authorization", "")
-    if not auth.startswith("Bearer "):
-        return None
-    token = auth[len("Bearer "):].strip()
+    if auth.startswith("Bearer "):
+        token = auth[len("Bearer "):].strip()
+    if not token:
+        token = request.cookies.get(COOKIE_ACCESS_NAME)
     if not token:
         return None
     with get_db_connection() as conn:
         row = conn.execute(
             """SELECT u.* FROM auth_tokens t
                JOIN users u ON u.id = t.user_id
-               WHERE t.token = ?""",
+               WHERE t.token = ?
+                 AND (t.token_type IS NULL OR t.token_type = 'access')
+                 AND (t.expires_at IS NULL OR t.expires_at > datetime('now'))""",
             (token,)).fetchone()
     return _user_dict(row) if row else None
 
 
-def require_teacher(user: dict | None) -> JSONResponse | None:
+def require_teacher(user: Optional[dict]) -> Optional[JSONResponse]:
     """Return a 403 envelope response when the user is not an approved teacher."""
     if not user or user["role"] != "teacher" or user["status"] != "approved":
         return JSONResponse(status_code=403, content={
@@ -104,23 +142,104 @@ async def login(body: dict):
             "error": {"code": "VALIDATION_ERROR", "retryable": False,
                       "message": "This account was not approved. Please talk to your teacher."}})
 
-    token = new_token()
+    access_token = new_token()
+    refresh_token = new_token()
     with get_db_connection() as conn:
-        conn.execute("INSERT INTO auth_tokens (token, user_id) VALUES (?, ?)",
-                     (token, user["id"]))
+        conn.execute(
+            """INSERT INTO auth_tokens (token, user_id, token_type, expires_at)
+               VALUES (?, ?, 'access', datetime('now', '+15 minutes'))""",
+            (access_token, user["id"]))
+        conn.execute(
+            """INSERT INTO auth_tokens (token, user_id, token_type, expires_at)
+               VALUES (?, ?, 'refresh', datetime('now', '+7 days'))""",
+            (refresh_token, user["id"]))
         conn.commit()
-    return {"token": token, "user": user}
+
+    response = JSONResponse(content={
+        "token": access_token,
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "user": user
+    })
+    set_auth_cookies(response, access_token, refresh_token)
+    return response
+
+
+@router.post("/refresh")
+async def refresh(request: Request):
+    body = {}
+    try:
+        body = await request.json()
+    except Exception:
+        pass
+
+    refresh_tok = request.cookies.get(COOKIE_REFRESH_NAME)
+    if not refresh_tok and body:
+        refresh_tok = body.get("refresh_token")
+    if not refresh_tok:
+        auth = request.headers.get("Authorization", "")
+        if auth.startswith("Bearer "):
+            refresh_tok = auth[len("Bearer "):].strip()
+
+    if not refresh_tok:
+        return JSONResponse(status_code=401, content={
+            "error": {"code": "REFRESH_TOKEN_MISSING", "message": "No refresh token provided.", "retryable": False}})
+
+    with get_db_connection() as conn:
+        row = conn.execute(
+            """SELECT u.* FROM auth_tokens t
+               JOIN users u ON u.id = t.user_id
+               WHERE t.token = ?
+                 AND t.token_type = 'refresh'
+                 AND (t.expires_at IS NULL OR t.expires_at > datetime('now'))""",
+            (refresh_tok,)).fetchone()
+        if not row:
+            return JSONResponse(status_code=401, content={
+                "error": {"code": "REFRESH_TOKEN_EXPIRED", "message": "Refresh token is invalid or expired.", "retryable": False}})
+
+        user = _user_dict(row)
+        if user["status"] != "approved":
+            return JSONResponse(status_code=403, content={
+                "error": {"code": "ACCOUNT_NOT_APPROVED", "message": "Account is not active.", "retryable": False}})
+
+        new_access = new_token()
+        conn.execute(
+            """INSERT INTO auth_tokens (token, user_id, token_type, expires_at)
+               VALUES (?, ?, 'access', datetime('now', '+15 minutes'))""",
+            (new_access, user["id"]))
+        conn.commit()
+
+    response = JSONResponse(content={
+        "ok": True,
+        "token": new_access,
+        "access_token": new_access,
+        "user": user
+    })
+    set_auth_cookies(response, new_access)
+    return response
 
 
 @router.post("/logout")
 async def logout(request: Request):
+    tokens_to_delete = []
     auth = request.headers.get("Authorization", "")
     if auth.startswith("Bearer "):
-        with get_db_connection() as conn:
-            conn.execute("DELETE FROM auth_tokens WHERE token = ?",
-                         (auth[len("Bearer "):].strip(),))
-            conn.commit()
-    return {"ok": True}
+        tokens_to_delete.append(auth[len("Bearer "):].strip())
+    c_access = request.cookies.get(COOKIE_ACCESS_NAME)
+    if c_access:
+        tokens_to_delete.append(c_access)
+    c_refresh = request.cookies.get(COOKIE_REFRESH_NAME)
+    if c_refresh:
+        tokens_to_delete.append(c_refresh)
+
+    with get_db_connection() as conn:
+        for tok in set(tokens_to_delete):
+            conn.execute("DELETE FROM auth_tokens WHERE token = ?", (tok,))
+        conn.commit()
+
+    response = JSONResponse(content={"ok": True})
+    clear_auth_cookies(response)
+    return response
 
 
 @router.get("/me")

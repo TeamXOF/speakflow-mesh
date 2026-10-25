@@ -8,6 +8,9 @@ flow documented in scripts/build_dictionary.py).
 
 The dictionary NEVER processes live audio — it is lookup-only.
 """
+from __future__ import annotations
+from typing import Optional
+
 import json
 import logging
 import os
@@ -46,7 +49,7 @@ def _load_all():
     return dictionary, overrides
 
 
-def lookup(word: str, language: str) -> dict | None:
+def lookup(word: str, language: str) -> Optional[dict]:
     """Reference vector for a word, or None. Overrides win over generated."""
     if not word:
         return None
